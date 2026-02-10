@@ -1,0 +1,32 @@
+node_modules/
+dist/
+.env
+.env.local
+
+# Cache and state
+data/corp-code-cache/
+.dexter/
+*.sqlite
+*.sqlite3
+
+# KIS OAuth token cache
+.korean-dexter/
+
+# Rate limit state
+rate-limits.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build
+*.tsbuildinfo
+
+# Logs
+*.log
