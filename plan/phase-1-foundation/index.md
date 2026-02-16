@@ -39,22 +39,22 @@ Before writing any agent logic or financial tools, we must validate critical ass
 | #1 | [[phase-1-foundation/01-assumptions\|Validate 7 Critical Assumptions]] | critical | medium | planned |
 | #2 | [[phase-1-foundation/02-competitive-analysis\|Competitive Analysis]] | critical | medium | planned |
 | #20 | [[phase-1-foundation/20-user-persona\|Define Target User Persona]] | critical | medium | planned |
-| #3 | [[phase-1-foundation/03-scaffold\|Fork & Scaffold]] | critical | large | planned |
-| #5 | [[phase-1-foundation/05-data-model\|Cross-API Data Model]] | critical | large | planned |
-| #10 | [[phase-1-foundation/10-rate-limiter\|Unified Rate Limiter]] | critical | medium | planned |
-| #11 | [[phase-1-foundation/11-cache\|Two-Tier Caching Layer]] | critical | large | planned |
-| #4 | [[phase-1-foundation/04-corp-resolver\|Corp Code Resolver with Jamo-Aware Fuzzy Matching]] | critical | xlarge | planned |
+| #3 | [[phase-1-foundation/03-scaffold\|Fork & Scaffold]] | critical | large | done |
+| #5 | [[phase-1-foundation/05-data-model\|Cross-API Data Model]] | critical | large | done |
+| #10 | [[phase-1-foundation/10-rate-limiter\|Unified Rate Limiter]] | critical | medium | done |
+| #11 | [[phase-1-foundation/11-cache\|Two-Tier Caching Layer]] | critical | large | done |
+| #4 | [[phase-1-foundation/04-corp-resolver\|Corp Code Resolver with Jamo-Aware Fuzzy Matching]] | critical | xlarge | done |
 
 ## Success Criteria
 
 - [ ] All 7 assumptions validated with evidence
 - [ ] Competitive landscape documented
 - [ ] Target user persona defined
-- [ ] Project forked and building with Bun
-- [ ] Shared data model defined
-- [ ] Rate limiter operational for both APIs
-- [ ] Two-tier cache working with TTL rules
-- [ ] Corp code resolver handling exact and fuzzy matches with >95% accuracy
+- [x] Project forked and building with Bun
+- [x] Shared data model defined
+- [x] Rate limiter operational for both APIs
+- [x] Two-tier cache working with TTL rules
+- [x] Corp code resolver handling exact and fuzzy matches with >95% accuracy
 
 ## What's Next
 

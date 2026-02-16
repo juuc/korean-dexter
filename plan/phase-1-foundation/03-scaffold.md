@@ -3,7 +3,7 @@ title: "Fork Dexter & Project Scaffold"
 issue: 3
 phase: 1-foundation
 priority: critical
-status: planned
+status: done
 type: infra
 created: 2026-02-16
 depends_on: ["[[phase-1-foundation/01-assumptions]]", "[[phase-1-foundation/02-competitive-analysis]]", "[[phase-1-foundation/20-user-persona]]"]

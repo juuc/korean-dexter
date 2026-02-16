@@ -3,7 +3,7 @@ title: "Corp Code Resolver with Jamo-Aware Fuzzy Matching"
 issue: 4
 phase: 1-foundation
 priority: critical
-status: planned
+status: done
 type: feature
 created: 2026-02-16
 depends_on: ["[[phase-1-foundation/03-scaffold]]", "[[phase-1-foundation/05-data-model]]"]

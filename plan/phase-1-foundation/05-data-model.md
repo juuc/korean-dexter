@@ -3,7 +3,7 @@ title: "Cross-API Data Model"
 issue: 5
 phase: 1-foundation
 priority: critical
-status: planned
+status: done
 type: infra
 created: 2026-02-16
 depends_on: ["[[phase-1-foundation/03-scaffold]]"]
