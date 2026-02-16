@@ -3,7 +3,7 @@ title: "KIS API Client with OAuth Token Lifecycle"
 issue: 8
 phase: 2-core
 priority: critical
-status: planned
+status: done
 type: feature
 created: 2026-02-16
 depends_on:

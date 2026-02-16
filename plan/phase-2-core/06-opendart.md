@@ -3,7 +3,7 @@ title: "OpenDART API Client & Financial Statement Tools"
 issue: 6
 phase: 2-core
 priority: critical
-status: planned
+status: done
 type: feature
 created: 2026-02-16
 depends_on:

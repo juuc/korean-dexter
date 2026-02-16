@@ -67,8 +67,8 @@ Critical challenge: Korean financial data is structurally different from US mark
 
 ## Success Criteria
 
-- [ ] OpenDART client can fetch Samsung 2024 annual financials (both key and full)
-- [ ] KIS client can get real-time Samsung stock price
+- [x] OpenDART client can fetch Samsung 2024 annual financials (both key and full)
+- [x] KIS client can get real-time Samsung stock price
 - [ ] AccountMapper normalizes "매출액" → "revenue" reliably
 - [ ] Agent responds in Korean with proper 조원/억원/만원 formatting
 - [ ] Token budget handles typical Korean financial query without context overflow
