@@ -19,11 +19,15 @@ rate-limits.json
 .DS_Store
 Thumbs.db
 
+# OMC state
+.omc/
+
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+.obsidian/
 
 # Build
 *.tsbuildinfo
