@@ -1,14 +1,8 @@
 /**
  * Rate limiter configuration for Korean financial APIs.
+ * Implemented in rate-limiter.ts with multi-tier token buckets.
  */
-export interface RateLimitConfig {
-  /** Maximum requests per window */
-  readonly maxRequests: number;
-  /** Window duration in milliseconds */
-  readonly windowMs: number;
-  /** Optional: minimum delay between requests in ms */
-  readonly minDelayMs?: number;
-}
+export type { RateLimitConfig } from './rate-limiter.js';
 
 /**
  * Cache configuration for financial data.
