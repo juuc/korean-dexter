@@ -2,7 +2,6 @@ import { AIMessage } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
 import { ChatAnthropic } from '@langchain/anthropic';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { SystemMessage, HumanMessage } from '@langchain/core/messages';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { StructuredToolInterface } from '@langchain/core/tools';
@@ -13,8 +12,8 @@ import type { TokenUsage } from '@/agent/types';
 import { logger } from '@/utils';
 import { resolveProvider, getProviderById } from '@/providers';
 
-export const DEFAULT_PROVIDER = 'anthropic';
-export const DEFAULT_MODEL = 'claude-sonnet-4-5-20250929';
+export const DEFAULT_PROVIDER = 'google';
+export const DEFAULT_MODEL = 'gemini-2.5-flash';
 
 /**
  * Gets the fast model variant for the given provider.
@@ -211,13 +210,10 @@ export async function callLlm(prompt: string, options: CallLlmOptions = {}): Pro
     const messages = buildAnthropicMessages(finalSystemPrompt, prompt);
     result = await withRetry(() => runnable.invoke(messages, invokeOpts), provider.displayName);
   } else {
-    // Other providers: use ChatPromptTemplate (OpenAI/Gemini have automatic caching)
-    const promptTemplate = ChatPromptTemplate.fromMessages([
-      ['system', finalSystemPrompt],
-      ['user', '{prompt}'],
-    ]);
-    const chain = promptTemplate.pipe(runnable);
-    result = await withRetry(() => chain.invoke({ prompt }, invokeOpts), provider.displayName);
+    // Other providers: use direct messages to avoid ChatPromptTemplate interpreting
+    // curly braces in system prompt (e.g., Korean financial formatting examples) as variables
+    const messages = [new SystemMessage(finalSystemPrompt), new HumanMessage(prompt)];
+    result = await withRetry(() => runnable.invoke(messages, invokeOpts), provider.displayName);
   }
   const usage = extractUsage(result);
 
