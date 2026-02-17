@@ -25,7 +25,6 @@ import {
   checkOpenDartApiKey,
   checkKisCredentials,
 } from '@/utils/env.js';
-import { formatAmount } from '@/shared/formatter.js';
 import { formatKoreanError } from '@/tools/error-messages.js';
 import type { RegisteredTool } from './registry.js';
 import {
@@ -305,7 +304,7 @@ function createGetStockPriceTool(): RegisteredTool {
         stockCode: data.stockCode,
         name: data.name,
         currentPrice: data.currentPrice.displayValue,
-        change: formatAmount(data.change.value, { showSign: true }),
+        change: data.change.displayValue,
         changePercent: `${data.changePercent >= 0 ? '+' : ''}${data.changePercent.toFixed(2)}%`,
         volume: data.volume.toLocaleString('en-US'),
         marketCap: data.marketCap.displayValue,

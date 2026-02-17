@@ -1,5 +1,5 @@
 import { type ToolResult, type NormalizedAmount } from '@/shared/types';
-import { parseRawAmount, formatAmount } from '@/shared/formatter';
+import { parseRawAmount, formatAmount, type FormatOptions } from '@/shared/formatter';
 import { CACHE_TTL } from '@/infra/cache';
 import { type KISClient } from './client';
 import { getPriceCacheTTL, isKRXMarketOpen } from './market-hours';
@@ -127,17 +127,20 @@ export async function getStockPrice(
   const today = new Date().toISOString().split('T')[0];
   const marketOpen = isKRXMarketOpen();
 
+  // Per-share prices: show exact won with commas, not auto-scaled 만원
+  const priceFormat: FormatOptions = { preferredScale: 'won' };
+
   const parsed: StockPriceResult = {
     stockCode: output.stck_shrn_iscd || stockCode,
     name: output.hts_kor_isnm ?? stockCode,
-    currentPrice: buildNormalizedAmount(output.stck_prpr, today),
-    change: buildNormalizedAmount(output.prdy_vrss, today),
+    currentPrice: buildNormalizedAmount(output.stck_prpr, today, priceFormat),
+    change: buildNormalizedAmount(output.prdy_vrss, today, { preferredScale: 'won', showSign: true }),
     changePercent: parseRawAmount(output.prdy_ctrt) ?? 0,
     volume: parseRawAmount(output.acml_vol) ?? 0,
     marketCap: buildMarketCapAmount(output.hts_avls, today),
-    high: buildNormalizedAmount(output.stck_hgpr, today),
-    low: buildNormalizedAmount(output.stck_lwpr, today),
-    open: buildNormalizedAmount(output.stck_oprc, today),
+    high: buildNormalizedAmount(output.stck_hgpr, today, priceFormat),
+    low: buildNormalizedAmount(output.stck_lwpr, today, priceFormat),
+    open: buildNormalizedAmount(output.stck_oprc, today, priceFormat),
     isMarketOpen: marketOpen,
   };
 
@@ -293,13 +296,15 @@ export async function getMarketIndex(
 
 /**
  * Build a NormalizedAmount from a raw KIS price string (in WON).
+ * Pass formatOptions to control display formatting (e.g., preferredScale: 'won' for stock prices).
  */
 function buildNormalizedAmount(
   rawValue: string,
-  asOfDate: string
+  asOfDate: string,
+  formatOptions?: FormatOptions
 ): NormalizedAmount {
   const value = parseRawAmount(rawValue);
-  const displayValue = formatAmount(value);
+  const displayValue = formatAmount(value, formatOptions);
   const abs = Math.abs(value ?? 0);
 
   let scale: NormalizedAmount['scale'];

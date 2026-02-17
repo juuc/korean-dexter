@@ -49,6 +49,15 @@ describe('KoreanFinancialFormatter', () => {
       );
     });
 
+    test('formats stock prices in won (no auto-scaling)', () => {
+      // Stock prices should show exact won with commas, not 만원 scale
+      expect(formatAmount(178_000, { preferredScale: 'won' })).toBe('178,000원');
+      expect(formatAmount(55_300, { preferredScale: 'won' })).toBe('55,300원');
+      expect(formatAmount(1_250_000, { preferredScale: 'won' })).toBe('1,250,000원');
+      expect(formatAmount(2_600, { preferredScale: 'won', showSign: true })).toBe('+2,600원');
+      expect(formatAmount(-3_400, { preferredScale: 'won', showSign: true })).toBe('-3,400원');
+    });
+
     test('respects precision option', () => {
       expect(formatAmount(85_630_541_000_000, { precision: 2 })).toBe(
         '85.63조원'
