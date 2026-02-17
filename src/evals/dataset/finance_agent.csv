@@ -1,51 +1,305 @@
 question,answer,type,scoring_method,tolerance
-삼성전자 2024년 매출액은?,302.23조원,quantitative_retrieval,numerical,0.01
+삼성전자 2024년 매출액은?,300.87조원,quantitative_retrieval,numerical,0.01
+삼성전자 2023년 매출액은?,258.94조원,quantitative_retrieval,numerical,0.01
+삼성전자 2022년 매출액은?,302.23조원,quantitative_retrieval,numerical,0.01
 삼성전자 2024년 영업이익은?,32.73조원,quantitative_retrieval,numerical,0.01
+삼성전자 2023년 영업이익은?,6.57조원,quantitative_retrieval,numerical,0.01
+삼성전자 2022년 영업이익은?,43.38조원,quantitative_retrieval,numerical,0.01
+삼성전자 2024년 당기순이익은?,34.45조원,quantitative_retrieval,numerical,0.01
+삼성전자 2023년 당기순이익은?,15.49조원,quantitative_retrieval,numerical,0.01
+삼성전자 2022년 당기순이익은?,55.65조원,quantitative_retrieval,numerical,0.01
+삼성전자 2024년 자산총계는?,514.53조원,quantitative_retrieval,numerical,0.01
+삼성전자 2023년 자산총계는?,455.91조원,quantitative_retrieval,numerical,0.01
+삼성전자 2022년 자산총계는?,448.42조원,quantitative_retrieval,numerical,0.01
+삼성전자 2024년 부채총계는?,112.34조원,quantitative_retrieval,numerical,0.01
+삼성전자 2023년 부채총계는?,92.23조원,quantitative_retrieval,numerical,0.01
+삼성전자 2022년 부채총계는?,93.67조원,quantitative_retrieval,numerical,0.01
+삼성전자 2024년 자본총계는?,402.19조원,quantitative_retrieval,numerical,0.01
+삼성전자 2023년 자본총계는?,363.68조원,quantitative_retrieval,numerical,0.01
+삼성전자 2022년 자본총계는?,354.75조원,quantitative_retrieval,numerical,0.01
+현대자동차 2024년 매출액은?,175.23조원,quantitative_retrieval,numerical,0.01
+현대자동차 2023년 매출액은?,162.66조원,quantitative_retrieval,numerical,0.01
+현대자동차 2022년 매출액은?,142.15조원,quantitative_retrieval,numerical,0.01
+현대자동차 2024년 영업이익은?,14.24조원,quantitative_retrieval,numerical,0.01
+현대자동차 2023년 영업이익은?,15.13조원,quantitative_retrieval,numerical,0.01
+현대자동차 2022년 영업이익은?,9.82조원,quantitative_retrieval,numerical,0.01
+현대자동차 2024년 당기순이익은?,13.23조원,quantitative_retrieval,numerical,0.01
+현대자동차 2023년 당기순이익은?,12.27조원,quantitative_retrieval,numerical,0.01
+현대자동차 2022년 당기순이익은?,7.98조원,quantitative_retrieval,numerical,0.01
+현대자동차 2024년 자산총계는?,339.80조원,quantitative_retrieval,numerical,0.01
+현대자동차 2023년 자산총계는?,282.46조원,quantitative_retrieval,numerical,0.01
+현대자동차 2022년 자산총계는?,255.74조원,quantitative_retrieval,numerical,0.01
+현대자동차 2024년 부채총계는?,219.52조원,quantitative_retrieval,numerical,0.01
+현대자동차 2023년 부채총계는?,180.65조원,quantitative_retrieval,numerical,0.01
+현대자동차 2022년 부채총계는?,164.85조원,quantitative_retrieval,numerical,0.01
+현대자동차 2024년 자본총계는?,120.28조원,quantitative_retrieval,numerical,0.01
+현대자동차 2023년 자본총계는?,101.81조원,quantitative_retrieval,numerical,0.01
+현대자동차 2022년 자본총계는?,90.90조원,quantitative_retrieval,numerical,0.01
 SK하이닉스 2024년 매출액은?,66.19조원,quantitative_retrieval,numerical,0.01
-SK하이닉스 2024년 영업이익은?,23.46조원,quantitative_retrieval,numerical,0.01
-현대자동차 2024년 매출액은?,175.56조원,quantitative_retrieval,numerical,0.01
-현대자동차 2024년 영업이익은?,14.23조원,quantitative_retrieval,numerical,0.01
-LG에너지솔루션 2024년 매출액은?,25.6조원,quantitative_retrieval,numerical,0.01
-네이버 2024년 매출액은?,10.7조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2023년 매출액은?,32.77조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2022년 매출액은?,44.62조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2024년 영업이익은?,23.47조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2023년 영업이익은?,-7.73조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2022년 영업이익은?,6.81조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2024년 당기순이익은?,19.80조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2023년 당기순이익은?,-9.14조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2022년 당기순이익은?,2.24조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2024년 자산총계는?,119.86조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2023년 자산총계는?,100.33조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2022년 자산총계는?,103.87조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2024년 부채총계는?,45.94조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2023년 부채총계는?,46.83조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2022년 부채총계는?,40.58조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2024년 자본총계는?,73.92조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2023년 자본총계는?,53.50조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 2022년 자본총계는?,63.29조원,quantitative_retrieval,numerical,0.01
 카카오 2024년 매출액은?,7.87조원,quantitative_retrieval,numerical,0.01
-기아 2024년 영업이익은?,12.7조원,quantitative_retrieval,numerical,0.01
-KB금융 2024년 당기순이익은?,5.07조원,quantitative_retrieval,numerical,0.01
-삼성생명 2024년 당기순이익은?,2.3조원,quantitative_retrieval,numerical,0.01
-SK하이닉스 최대주주는?,SK스퀘어 (지분 약 20%),qualitative_retrieval,llm_judge,
-삼성전자 대표이사는?,"경계현, 전영현",qualitative_retrieval,llm_judge,
-현대차 본사 소재지는?,서울특별시 서초구,qualitative_retrieval,llm_judge,
-네이버 결산월은?,12월,qualitative_retrieval,llm_judge,
-카카오 상장시장은?,KOSPI,qualitative_retrieval,llm_judge,
-LG에너지솔루션 최대주주는?,LG화학,qualitative_retrieval,llm_judge,
-삼성전자와 SK하이닉스 중 2024년 매출액이 더 높은 기업은?,삼성전자 (302.23조원 vs 66.19조원),comparison,llm_judge,
-현대차와 기아 2024년 영업이익률 비교,"현대차 약 8.1%, 기아 약 11.8%, 기아가 더 높음",comparison,llm_judge,
-네이버와 카카오 중 2024년 매출이 더 큰 기업은?,네이버 (10.7조원 vs 7.87조원),comparison,llm_judge,
-KB금융과 삼성생명 중 2024년 순이익이 더 높은 기업은?,KB금융 (5.07조원 vs 2.3조원),comparison,llm_judge,
-삼성전자와 현대차 중 2024년 영업이익이 더 높은 기업은?,삼성전자 (32.73조원 vs 14.23조원),comparison,llm_judge,
-LG에너지솔루션과 SK하이닉스 중 2024년 매출이 더 높은 기업은?,SK하이닉스 (66.19조원 vs 25.6조원),comparison,llm_judge,
-삼성전자 최근 3년간 매출 추이는?,"2022년 302.23조원, 2023년 258.94조원, 2024년 302.23조원 (V자 회복)",trends,llm_judge,
-SK하이닉스 최근 3년간 영업이익 추이는?,"2022년 6.81조원, 2023년 -7.73조원 적자, 2024년 23.47조원 흑자전환",trends,llm_judge,
-현대차 매출 3개년 추이,"2022년 142.15조원, 2023년 162.66조원, 2024년 175.56조원 (지속 성장)",trends,llm_judge,
-네이버 최근 3년간 매출 추이는?,"2022년 8.22조원, 2023년 9.67조원, 2024년 10.7조원 (지속 성장)",trends,llm_judge,
-카카오 최근 3년간 매출 추이는?,"2022년 6.8조원, 2023년 7.56조원, 2024년 7.87조원 (완만한 성장)",trends,llm_judge,
-삼성전자 현재 주가는?,55800원,price_volume,numerical,0.10
-SK하이닉스 현재 주가는?,211500원,price_volume,numerical,0.10
-현대차 현재 주가는?,207000원,price_volume,numerical,0.10
-카카오 현재 주가는?,42150원,price_volume,numerical,0.10
-네이버 현재 주가는?,192300원,price_volume,numerical,0.10
-기아 현재 주가는?,95200원,price_volume,numerical,0.10
-삼성전자 현재 PER은?,11.2배,valuation,numerical,0.05
-SK하이닉스 현재 PER은?,4.8배,valuation,numerical,0.05
-현대차 현재 PBR은?,0.52배,valuation,numerical,0.05
-네이버 현재 PER은?,22.5배,valuation,numerical,0.05
-삼성전자 현재 배당수익률은?,2.8%,valuation,numerical,0.05
-삼성 매출은?,삼성전자로 해석하여 302.23조원 (모호한 입력 처리),edge_cases,llm_judge,
-현대 영업이익은?,현대자동차로 해석하여 14.23조원,edge_cases,llm_judge,
-없는회사 실적은?,해당 기업을 찾을 수 없습니다 (에러 핸들링),edge_cases,llm_judge,
+카카오 2023년 매출액은?,7.56조원,quantitative_retrieval,numerical,0.01
+카카오 2022년 매출액은?,6.80조원,quantitative_retrieval,numerical,0.01
+카카오 2024년 영업이익은?,"4,602.12억원",quantitative_retrieval,numerical,0.01
+카카오 2023년 영업이익은?,"4,608.58억원",quantitative_retrieval,numerical,0.01
+카카오 2022년 영업이익은?,"5,693.90억원",quantitative_retrieval,numerical,0.01
+카카오 2024년 당기순이익은?,"-1,618.71억원",quantitative_retrieval,numerical,0.01
+카카오 2023년 당기순이익은?,-1.82조원,quantitative_retrieval,numerical,0.01
+카카오 2022년 당기순이익은?,1.07조원,quantitative_retrieval,numerical,0.01
+카카오 2024년 자산총계는?,25.77조원,quantitative_retrieval,numerical,0.01
+카카오 2023년 자산총계는?,25.18조원,quantitative_retrieval,numerical,0.01
+카카오 2022년 자산총계는?,22.96조원,quantitative_retrieval,numerical,0.01
+카카오 2024년 부채총계는?,11.83조원,quantitative_retrieval,numerical,0.01
+카카오 2023년 부채총계는?,11.32조원,quantitative_retrieval,numerical,0.01
+카카오 2022년 부채총계는?,9.45조원,quantitative_retrieval,numerical,0.01
+카카오 2024년 자본총계는?,13.94조원,quantitative_retrieval,numerical,0.01
+카카오 2023년 자본총계는?,13.86조원,quantitative_retrieval,numerical,0.01
+카카오 2022년 자본총계는?,13.52조원,quantitative_retrieval,numerical,0.01
+기아 2024년 매출액은?,107.45조원,quantitative_retrieval,numerical,0.01
+기아 2023년 매출액은?,99.81조원,quantitative_retrieval,numerical,0.01
+기아 2022년 매출액은?,86.56조원,quantitative_retrieval,numerical,0.01
+기아 2024년 영업이익은?,12.67조원,quantitative_retrieval,numerical,0.01
+기아 2023년 영업이익은?,11.61조원,quantitative_retrieval,numerical,0.01
+기아 2022년 영업이익은?,7.23조원,quantitative_retrieval,numerical,0.01
+기아 2024년 당기순이익은?,9.78조원,quantitative_retrieval,numerical,0.01
+기아 2023년 당기순이익은?,8.78조원,quantitative_retrieval,numerical,0.01
+기아 2022년 당기순이익은?,5.41조원,quantitative_retrieval,numerical,0.01
+기아 2024년 자산총계는?,92.76조원,quantitative_retrieval,numerical,0.01
+기아 2023년 자산총계는?,80.63조원,quantitative_retrieval,numerical,0.01
+기아 2022년 자산총계는?,73.71조원,quantitative_retrieval,numerical,0.01
+기아 2024년 부채총계는?,36.92조원,quantitative_retrieval,numerical,0.01
+기아 2023년 부채총계는?,34.07조원,quantitative_retrieval,numerical,0.01
+기아 2022년 부채총계는?,34.37조원,quantitative_retrieval,numerical,0.01
+기아 2024년 자본총계는?,55.84조원,quantitative_retrieval,numerical,0.01
+기아 2023년 자본총계는?,46.56조원,quantitative_retrieval,numerical,0.01
+기아 2022년 자본총계는?,39.34조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2024년 매출액은?,25.62조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2023년 매출액은?,33.75조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2022년 매출액은?,25.60조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2024년 영업이익은?,"5,753.87억원",quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2023년 영업이익은?,2.16조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2022년 영업이익은?,1.21조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2024년 당기순이익은?,"3,386.02억원",quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2023년 당기순이익은?,1.64조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2022년 당기순이익은?,"7,798.26억원",quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2024년 자산총계는?,60.31조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2023년 자산총계는?,45.44조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2022년 자산총계는?,38.30조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2024년 부채총계는?,29.34조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2023년 부채총계는?,21.06조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2022년 부채총계는?,17.71조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2024년 자본총계는?,30.97조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2023년 자본총계는?,24.37조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2022년 자본총계는?,20.59조원,quantitative_retrieval,numerical,0.01
+NAVER 2024년 매출액은?,10.74조원,quantitative_retrieval,numerical,0.01
+NAVER 2023년 매출액은?,9.67조원,quantitative_retrieval,numerical,0.01
+NAVER 2022년 매출액은?,8.22조원,quantitative_retrieval,numerical,0.01
+NAVER 2024년 영업이익은?,1.98조원,quantitative_retrieval,numerical,0.01
+NAVER 2023년 영업이익은?,1.49조원,quantitative_retrieval,numerical,0.01
+NAVER 2022년 영업이익은?,1.30조원,quantitative_retrieval,numerical,0.01
+NAVER 2024년 당기순이익은?,1.93조원,quantitative_retrieval,numerical,0.01
+NAVER 2023년 당기순이익은?,"9,850.18억원",quantitative_retrieval,numerical,0.01
+NAVER 2022년 당기순이익은?,"6,731.80억원",quantitative_retrieval,numerical,0.01
+NAVER 2024년 자산총계는?,38.17조원,quantitative_retrieval,numerical,0.01
+NAVER 2023년 자산총계는?,35.74조원,quantitative_retrieval,numerical,0.01
+NAVER 2022년 자산총계는?,33.90조원,quantitative_retrieval,numerical,0.01
+NAVER 2024년 부채총계는?,11.17조원,quantitative_retrieval,numerical,0.01
+NAVER 2023년 부채총계는?,11.50조원,quantitative_retrieval,numerical,0.01
+NAVER 2022년 부채총계는?,10.45조원,quantitative_retrieval,numerical,0.01
+NAVER 2024년 자본총계는?,27.00조원,quantitative_retrieval,numerical,0.01
+NAVER 2023년 자본총계는?,24.24조원,quantitative_retrieval,numerical,0.01
+NAVER 2022년 자본총계는?,23.45조원,quantitative_retrieval,numerical,0.01
+KB금융 2024년 영업이익은?,8.05조원,quantitative_retrieval,numerical,0.01
+KB금융 2023년 영업이익은?,6.39조원,quantitative_retrieval,numerical,0.01
+KB금융 2022년 영업이익은?,5.23조원,quantitative_retrieval,numerical,0.01
+KB금융 2024년 당기순이익은?,5.03조원,quantitative_retrieval,numerical,0.01
+KB금융 2023년 당기순이익은?,4.53조원,quantitative_retrieval,numerical,0.01
+KB금융 2022년 당기순이익은?,3.89조원,quantitative_retrieval,numerical,0.01
+KB금융 2024년 자산총계는?,757.85조원,quantitative_retrieval,numerical,0.01
+KB금융 2023년 자산총계는?,715.73조원,quantitative_retrieval,numerical,0.01
+KB금융 2022년 자산총계는?,688.65조원,quantitative_retrieval,numerical,0.01
+KB금융 2024년 부채총계는?,698.03조원,quantitative_retrieval,numerical,0.01
+KB금융 2023년 부채총계는?,657.09조원,quantitative_retrieval,numerical,0.01
+KB금융 2022년 부채총계는?,634.85조원,quantitative_retrieval,numerical,0.01
+KB금융 2024년 자본총계는?,59.82조원,quantitative_retrieval,numerical,0.01
+KB금융 2023년 자본총계는?,58.64조원,quantitative_retrieval,numerical,0.01
+KB금융 2022년 자본총계는?,53.80조원,quantitative_retrieval,numerical,0.01
+삼성생명 2024년 영업이익은?,2.50조원,quantitative_retrieval,numerical,0.01
+삼성생명 2023년 영업이익은?,2.40조원,quantitative_retrieval,numerical,0.01
+삼성생명 2022년 영업이익은?,2.18조원,quantitative_retrieval,numerical,0.01
+삼성생명 2024년 당기순이익은?,2.26조원,quantitative_retrieval,numerical,0.01
+삼성생명 2023년 당기순이익은?,2.03조원,quantitative_retrieval,numerical,0.01
+삼성생명 2022년 당기순이익은?,2.31조원,quantitative_retrieval,numerical,0.01
+삼성생명 2024년 자산총계는?,312.22조원,quantitative_retrieval,numerical,0.01
+삼성생명 2023년 자산총계는?,314.66조원,quantitative_retrieval,numerical,0.01
+삼성생명 2022년 자산총계는?,296.23조원,quantitative_retrieval,numerical,0.01
+삼성생명 2024년 부채총계는?,279.48조원,quantitative_retrieval,numerical,0.01
+삼성생명 2023년 부채총계는?,270.32조원,quantitative_retrieval,numerical,0.01
+삼성생명 2022년 부채총계는?,254.67조원,quantitative_retrieval,numerical,0.01
+삼성생명 2024년 자본총계는?,32.74조원,quantitative_retrieval,numerical,0.01
+삼성생명 2023년 자본총계는?,44.34조원,quantitative_retrieval,numerical,0.01
+삼성생명 2022년 자본총계는?,41.56조원,quantitative_retrieval,numerical,0.01
+삼성전자 대표이사는?,"전영현, 노태문",qualitative_retrieval,llm_judge,
+삼성전자 결산월은?,12월,qualitative_retrieval,llm_judge,
+삼성전자 설립일은?,1969년 01월 13일,qualitative_retrieval,llm_judge,
+현대자동차 대표이사는?,"정의선, 무뇨스 바르셀로 호세 안토니오(각자 대표이사)",qualitative_retrieval,llm_judge,
+현대자동차 결산월은?,12월,qualitative_retrieval,llm_judge,
+현대자동차 설립일은?,1967년 12월 29일,qualitative_retrieval,llm_judge,
+SK하이닉스 대표이사는?,곽노정,qualitative_retrieval,llm_judge,
+SK하이닉스 결산월은?,12월,qualitative_retrieval,llm_judge,
+SK하이닉스 설립일은?,1949년 10월 15일,qualitative_retrieval,llm_judge,
+카카오 대표이사는?,정신아,qualitative_retrieval,llm_judge,
+카카오 결산월은?,12월,qualitative_retrieval,llm_judge,
+카카오 설립일은?,1995년 02월 16일,qualitative_retrieval,llm_judge,
+기아 대표이사는?,"송호성,최준영(각자 대표이사)",qualitative_retrieval,llm_judge,
+기아 결산월은?,12월,qualitative_retrieval,llm_judge,
+기아 설립일은?,1944년 12월 10일,qualitative_retrieval,llm_judge,
+LG에너지솔루션 대표이사는?,김동명,qualitative_retrieval,llm_judge,
+LG에너지솔루션 결산월은?,12월,qualitative_retrieval,llm_judge,
+LG에너지솔루션 설립일은?,2020년 12월 01일,qualitative_retrieval,llm_judge,
+NAVER 대표이사는?,최수연,qualitative_retrieval,llm_judge,
+NAVER 결산월은?,12월,qualitative_retrieval,llm_judge,
+NAVER 설립일은?,1999년 06월 02일,qualitative_retrieval,llm_judge,
+KB금융 대표이사는?,양종희,qualitative_retrieval,llm_judge,
+KB금융 결산월은?,12월,qualitative_retrieval,llm_judge,
+KB금융 설립일은?,2008년 09월 29일,qualitative_retrieval,llm_judge,
+삼성생명 대표이사는?,홍원학,qualitative_retrieval,llm_judge,
+삼성생명 결산월은?,12월,qualitative_retrieval,llm_judge,
+삼성생명 설립일은?,1957년 04월 04일,qualitative_retrieval,llm_judge,
+삼성전자와 SK하이닉스 중 2024년 매출액이 더 높은 기업은?,삼성전자 (300.87조원 vs 66.19조원),comparison,llm_judge,
+삼성전자와 SK하이닉스 중 2024년 영업이익이 더 높은 기업은?,삼성전자 (32.73조원 vs 23.47조원),comparison,llm_judge,
+삼성전자와 SK하이닉스 중 2024년 당기순이익이 더 높은 기업은?,삼성전자 (34.45조원 vs 19.80조원),comparison,llm_judge,
+삼성전자와 SK하이닉스 중 2024년 자산총계이 더 높은 기업은?,삼성전자 (514.53조원 vs 119.86조원),comparison,llm_judge,
+삼성전자와 SK하이닉스 중 2023년 매출액이 더 높은 기업은?,삼성전자 (258.94조원 vs 32.77조원),comparison,llm_judge,
+삼성전자와 SK하이닉스 중 2023년 영업이익이 더 높은 기업은?,삼성전자 (6.57조원 vs -7.73조원),comparison,llm_judge,
+삼성전자와 SK하이닉스 중 2023년 당기순이익이 더 높은 기업은?,삼성전자 (15.49조원 vs -9.14조원),comparison,llm_judge,
+삼성전자와 SK하이닉스 중 2023년 자산총계이 더 높은 기업은?,삼성전자 (455.91조원 vs 100.33조원),comparison,llm_judge,
+현대자동차와 기아 중 2024년 매출액이 더 높은 기업은?,현대자동차 (175.23조원 vs 107.45조원),comparison,llm_judge,
+현대자동차와 기아 중 2024년 영업이익이 더 높은 기업은?,현대자동차 (14.24조원 vs 12.67조원),comparison,llm_judge,
+현대자동차와 기아 중 2024년 당기순이익이 더 높은 기업은?,현대자동차 (13.23조원 vs 9.78조원),comparison,llm_judge,
+현대자동차와 기아 중 2024년 자산총계이 더 높은 기업은?,현대자동차 (339.80조원 vs 92.76조원),comparison,llm_judge,
+현대자동차와 기아 중 2023년 매출액이 더 높은 기업은?,현대자동차 (162.66조원 vs 99.81조원),comparison,llm_judge,
+현대자동차와 기아 중 2023년 영업이익이 더 높은 기업은?,현대자동차 (15.13조원 vs 11.61조원),comparison,llm_judge,
+현대자동차와 기아 중 2023년 당기순이익이 더 높은 기업은?,현대자동차 (12.27조원 vs 8.78조원),comparison,llm_judge,
+현대자동차와 기아 중 2023년 자산총계이 더 높은 기업은?,현대자동차 (282.46조원 vs 80.63조원),comparison,llm_judge,
+삼성전자와 현대자동차 중 2024년 매출액이 더 높은 기업은?,삼성전자 (300.87조원 vs 175.23조원),comparison,llm_judge,
+삼성전자와 현대자동차 중 2024년 영업이익이 더 높은 기업은?,삼성전자 (32.73조원 vs 14.24조원),comparison,llm_judge,
+삼성전자와 현대자동차 중 2024년 당기순이익이 더 높은 기업은?,삼성전자 (34.45조원 vs 13.23조원),comparison,llm_judge,
+삼성전자와 현대자동차 중 2024년 자산총계이 더 높은 기업은?,삼성전자 (514.53조원 vs 339.80조원),comparison,llm_judge,
+삼성전자와 현대자동차 중 2023년 매출액이 더 높은 기업은?,삼성전자 (258.94조원 vs 162.66조원),comparison,llm_judge,
+삼성전자와 현대자동차 중 2023년 영업이익이 더 높은 기업은?,현대자동차 (6.57조원 vs 15.13조원),comparison,llm_judge,
+삼성전자와 현대자동차 중 2023년 당기순이익이 더 높은 기업은?,삼성전자 (15.49조원 vs 12.27조원),comparison,llm_judge,
+삼성전자와 현대자동차 중 2023년 자산총계이 더 높은 기업은?,삼성전자 (455.91조원 vs 282.46조원),comparison,llm_judge,
+KB금융와 삼성생명 중 2024년 영업이익이 더 높은 기업은?,KB금융 (8.05조원 vs 2.50조원),comparison,llm_judge,
+KB금융와 삼성생명 중 2024년 당기순이익이 더 높은 기업은?,KB금융 (5.03조원 vs 2.26조원),comparison,llm_judge,
+KB금융와 삼성생명 중 2024년 자산총계이 더 높은 기업은?,KB금융 (757.85조원 vs 312.22조원),comparison,llm_judge,
+KB금융와 삼성생명 중 2023년 영업이익이 더 높은 기업은?,KB금융 (6.39조원 vs 2.40조원),comparison,llm_judge,
+KB금융와 삼성생명 중 2023년 당기순이익이 더 높은 기업은?,KB금융 (4.53조원 vs 2.03조원),comparison,llm_judge,
+KB금융와 삼성생명 중 2023년 자산총계이 더 높은 기업은?,KB금융 (715.73조원 vs 314.66조원),comparison,llm_judge,
+LG에너지솔루션와 SK하이닉스 중 2024년 매출액이 더 높은 기업은?,SK하이닉스 (25.62조원 vs 66.19조원),comparison,llm_judge,
+LG에너지솔루션와 SK하이닉스 중 2024년 영업이익이 더 높은 기업은?,"SK하이닉스 (5,753.87억원 vs 23.47조원)",comparison,llm_judge,
+LG에너지솔루션와 SK하이닉스 중 2024년 당기순이익이 더 높은 기업은?,"SK하이닉스 (3,386.02억원 vs 19.80조원)",comparison,llm_judge,
+LG에너지솔루션와 SK하이닉스 중 2024년 자산총계이 더 높은 기업은?,SK하이닉스 (60.31조원 vs 119.86조원),comparison,llm_judge,
+LG에너지솔루션와 SK하이닉스 중 2023년 매출액이 더 높은 기업은?,LG에너지솔루션 (33.75조원 vs 32.77조원),comparison,llm_judge,
+LG에너지솔루션와 SK하이닉스 중 2023년 영업이익이 더 높은 기업은?,LG에너지솔루션 (2.16조원 vs -7.73조원),comparison,llm_judge,
+LG에너지솔루션와 SK하이닉스 중 2023년 당기순이익이 더 높은 기업은?,LG에너지솔루션 (1.64조원 vs -9.14조원),comparison,llm_judge,
+LG에너지솔루션와 SK하이닉스 중 2023년 자산총계이 더 높은 기업은?,SK하이닉스 (45.44조원 vs 100.33조원),comparison,llm_judge,
+삼성전자와 KB금융 중 2024년 영업이익이 더 높은 기업은?,삼성전자 (32.73조원 vs 8.05조원),comparison,llm_judge,
+삼성전자와 KB금융 중 2024년 당기순이익이 더 높은 기업은?,삼성전자 (34.45조원 vs 5.03조원),comparison,llm_judge,
+삼성전자와 KB금융 중 2024년 자산총계이 더 높은 기업은?,KB금융 (514.53조원 vs 757.85조원),comparison,llm_judge,
+삼성전자와 KB금융 중 2023년 영업이익이 더 높은 기업은?,삼성전자 (6.57조원 vs 6.39조원),comparison,llm_judge,
+삼성전자와 KB금융 중 2023년 당기순이익이 더 높은 기업은?,삼성전자 (15.49조원 vs 4.53조원),comparison,llm_judge,
+삼성전자와 KB금융 중 2023년 자산총계이 더 높은 기업은?,KB금융 (455.91조원 vs 715.73조원),comparison,llm_judge,
+현대자동차와 LG에너지솔루션 중 2024년 매출액이 더 높은 기업은?,현대자동차 (175.23조원 vs 25.62조원),comparison,llm_judge,
+현대자동차와 LG에너지솔루션 중 2024년 영업이익이 더 높은 기업은?,"현대자동차 (14.24조원 vs 5,753.87억원)",comparison,llm_judge,
+현대자동차와 LG에너지솔루션 중 2024년 당기순이익이 더 높은 기업은?,"현대자동차 (13.23조원 vs 3,386.02억원)",comparison,llm_judge,
+현대자동차와 LG에너지솔루션 중 2024년 자산총계이 더 높은 기업은?,현대자동차 (339.80조원 vs 60.31조원),comparison,llm_judge,
+현대자동차와 LG에너지솔루션 중 2023년 매출액이 더 높은 기업은?,현대자동차 (162.66조원 vs 33.75조원),comparison,llm_judge,
+현대자동차와 LG에너지솔루션 중 2023년 영업이익이 더 높은 기업은?,현대자동차 (15.13조원 vs 2.16조원),comparison,llm_judge,
+현대자동차와 LG에너지솔루션 중 2023년 당기순이익이 더 높은 기업은?,현대자동차 (12.27조원 vs 1.64조원),comparison,llm_judge,
+현대자동차와 LG에너지솔루션 중 2023년 자산총계이 더 높은 기업은?,현대자동차 (282.46조원 vs 45.44조원),comparison,llm_judge,
+카카오와 기아 중 2024년 매출액이 더 높은 기업은?,기아 (7.87조원 vs 107.45조원),comparison,llm_judge,
+카카오와 기아 중 2024년 영업이익이 더 높은 기업은?,"기아 (4,602.12억원 vs 12.67조원)",comparison,llm_judge,
+카카오와 기아 중 2024년 당기순이익이 더 높은 기업은?,"기아 (-1,618.71억원 vs 9.78조원)",comparison,llm_judge,
+카카오와 기아 중 2024년 자산총계이 더 높은 기업은?,기아 (25.77조원 vs 92.76조원),comparison,llm_judge,
+카카오와 기아 중 2023년 매출액이 더 높은 기업은?,기아 (7.56조원 vs 99.81조원),comparison,llm_judge,
+카카오와 기아 중 2023년 영업이익이 더 높은 기업은?,"기아 (4,608.58억원 vs 11.61조원)",comparison,llm_judge,
+카카오와 기아 중 2023년 당기순이익이 더 높은 기업은?,기아 (-1.82조원 vs 8.78조원),comparison,llm_judge,
+카카오와 기아 중 2023년 자산총계이 더 높은 기업은?,기아 (25.18조원 vs 80.63조원),comparison,llm_judge,
+삼성전자 최근 3년간 매출액 추이는?,"2022년 302.2조원, 2023년 258.9조원, 2024년 300.9조원 (V자 회복)",trends,llm_judge,
+삼성전자 최근 3년간 영업이익 추이는?,"2022년 43.4조원, 2023년 6.6조원, 2024년 32.7조원 (V자 회복)",trends,llm_judge,
+삼성전자 최근 3년간 당기순이익 추이는?,"2022년 55.7조원, 2023년 15.5조원, 2024년 34.5조원 (V자 회복)",trends,llm_judge,
+현대자동차 최근 3년간 매출액 추이는?,"2022년 142.2조원, 2023년 162.7조원, 2024년 175.2조원 (지속 성장)",trends,llm_judge,
+현대자동차 최근 3년간 영업이익 추이는?,"2022년 9.8조원, 2023년 15.1조원, 2024년 14.2조원 (하락 전환)",trends,llm_judge,
+현대자동차 최근 3년간 당기순이익 추이는?,"2022년 8.0조원, 2023년 12.3조원, 2024년 13.2조원 (지속 성장)",trends,llm_judge,
+SK하이닉스 최근 3년간 매출액 추이는?,"2022년 44.6조원, 2023년 32.8조원, 2024년 66.2조원 (V자 회복)",trends,llm_judge,
+SK하이닉스 최근 3년간 영업이익 추이는?,"2022년 6.8조원, 2023년 -7.7조원, 2024년 23.5조원 (흑자전환)",trends,llm_judge,
+SK하이닉스 최근 3년간 당기순이익 추이는?,"2022년 2.2조원, 2023년 -9.1조원, 2024년 19.8조원 (흑자전환)",trends,llm_judge,
+카카오 최근 3년간 매출액 추이는?,"2022년 6.8조원, 2023년 7.6조원, 2024년 7.9조원 (지속 성장)",trends,llm_judge,
+카카오 최근 3년간 영업이익 추이는?,"2022년 5,693.9억원, 2023년 4,608.6억원, 2024년 4,602.1억원 (지속 감소)",trends,llm_judge,
+카카오 최근 3년간 당기순이익 추이는?,"2022년 1.1조원, 2023년 -1.8조원, 2024년 -1,618.7억원 (V자 회복)",trends,llm_judge,
+기아 최근 3년간 매출액 추이는?,"2022년 86.6조원, 2023년 99.8조원, 2024년 107.4조원 (지속 성장)",trends,llm_judge,
+기아 최근 3년간 영업이익 추이는?,"2022년 7.2조원, 2023년 11.6조원, 2024년 12.7조원 (지속 성장)",trends,llm_judge,
+기아 최근 3년간 당기순이익 추이는?,"2022년 5.4조원, 2023년 8.8조원, 2024년 9.8조원 (지속 성장)",trends,llm_judge,
+LG에너지솔루션 최근 3년간 매출액 추이는?,"2022년 25.6조원, 2023년 33.7조원, 2024년 25.6조원 (하락 전환)",trends,llm_judge,
+LG에너지솔루션 최근 3년간 영업이익 추이는?,"2022년 1.2조원, 2023년 2.2조원, 2024년 5,753.9억원 (하락 전환)",trends,llm_judge,
+LG에너지솔루션 최근 3년간 당기순이익 추이는?,"2022년 7,798.3억원, 2023년 1.6조원, 2024년 3,386.0억원 (하락 전환)",trends,llm_judge,
+NAVER 최근 3년간 매출액 추이는?,"2022년 8.2조원, 2023년 9.7조원, 2024년 10.7조원 (지속 성장)",trends,llm_judge,
+NAVER 최근 3년간 영업이익 추이는?,"2022년 1.3조원, 2023년 1.5조원, 2024년 2.0조원 (지속 성장)",trends,llm_judge,
+NAVER 최근 3년간 당기순이익 추이는?,"2022년 6,731.8억원, 2023년 9,850.2억원, 2024년 1.9조원 (지속 성장)",trends,llm_judge,
+KB금융 최근 3년간 영업이익 추이는?,"2022년 5.2조원, 2023년 6.4조원, 2024년 8.0조원 (지속 성장)",trends,llm_judge,
+KB금융 최근 3년간 당기순이익 추이는?,"2022년 3.9조원, 2023년 4.5조원, 2024년 5.0조원 (지속 성장)",trends,llm_judge,
+삼성생명 최근 3년간 영업이익 추이는?,"2022년 2.2조원, 2023년 2.4조원, 2024년 2.5조원 (지속 성장)",trends,llm_judge,
+삼성생명 최근 3년간 당기순이익 추이는?,"2022년 2.3조원, 2023년 2.0조원, 2024년 2.3조원 (V자 회복)",trends,llm_judge,
+삼성전자 2024년 영업이익률은?,약 10.9%,derived_ratios,numerical,0.05
+삼성전자 2024년 부채비율은?,약 27.9%,derived_ratios,numerical,0.05
+삼성전자 2024년 순이익률은?,약 11.5%,derived_ratios,numerical,0.05
+현대자동차 2024년 영업이익률은?,약 8.1%,derived_ratios,numerical,0.05
+현대자동차 2024년 부채비율은?,약 182.5%,derived_ratios,numerical,0.05
+현대자동차 2024년 순이익률은?,약 7.5%,derived_ratios,numerical,0.05
+SK하이닉스 2024년 영업이익률은?,약 35.5%,derived_ratios,numerical,0.05
+SK하이닉스 2024년 부채비율은?,약 62.2%,derived_ratios,numerical,0.05
+SK하이닉스 2024년 순이익률은?,약 29.9%,derived_ratios,numerical,0.05
+카카오 2024년 영업이익률은?,약 5.8%,derived_ratios,numerical,0.05
+카카오 2024년 부채비율은?,약 84.8%,derived_ratios,numerical,0.05
+카카오 2024년 순이익률은?,약 -2.1%,derived_ratios,numerical,0.05
+기아 2024년 영업이익률은?,약 11.8%,derived_ratios,numerical,0.05
+기아 2024년 부채비율은?,약 66.1%,derived_ratios,numerical,0.05
+기아 2024년 순이익률은?,약 9.1%,derived_ratios,numerical,0.05
+LG에너지솔루션 2024년 영업이익률은?,약 2.2%,derived_ratios,numerical,0.05
+LG에너지솔루션 2024년 부채비율은?,약 94.7%,derived_ratios,numerical,0.05
+LG에너지솔루션 2024년 순이익률은?,약 1.3%,derived_ratios,numerical,0.05
+NAVER 2024년 영업이익률은?,약 18.4%,derived_ratios,numerical,0.05
+NAVER 2024년 부채비율은?,약 41.4%,derived_ratios,numerical,0.05
+NAVER 2024년 순이익률은?,약 18.0%,derived_ratios,numerical,0.05
+KB금융 2024년 부채비율은?,약 1167.0%,derived_ratios,numerical,0.05
+삼성생명 2024년 부채비율은?,약 853.7%,derived_ratios,numerical,0.05
+삼성 매출은?,삼성전자로 해석하여 약 300.87조원 (모호한 입력 처리),edge_cases,llm_judge,
+현대 영업이익은?,현대자동차로 해석하여 약 14.22조원,edge_cases,llm_judge,
+없는회사 실적은?,해당 기업을 찾을 수 없습니다,edge_cases,llm_judge,
 asdfghjk 매출은?,해당 기업을 찾을 수 없습니다,edge_cases,llm_judge,
-삼성전자 2025년 매출은?,아직 공시되지 않은 데이터입니다 (미래 데이터),edge_cases,llm_judge,
-삼성전자 주가 얼마야?,55800원 (informal query),edge_cases,llm_judge,
-005930 매출은?,삼성전자(005930) 매출 302.23조원 (ticker code lookup),edge_cases,llm_judge,
-현대차 시가총액은?,약 44.3조원,edge_cases,llm_judge,
-삼성전자 직원수는?,약 12.4만명 (non-financial query),edge_cases,llm_judge,
+삼성전자 2025년 매출은?,아직 공시되지 않은 데이터입니다,edge_cases,llm_judge,
+삼성전자 주가 얼마야?,주가 정보는 실시간 시세 조회가 필요합니다,edge_cases,llm_judge,
+005930 매출은?,삼성전자(005930) 매출 약 300.87조원,edge_cases,llm_judge,
 비상장기업인 쿠팡의 매출은?,한국 상장사가 아니므로 조회할 수 없습니다,edge_cases,llm_judge,
+삼성전자 직원수는?,재무제표에 포함되지 않는 정보입니다,edge_cases,llm_judge,
+삼성전자 2019년 매출은?,보유 데이터 범위(2022~2024)를 벗어납니다,edge_cases,llm_judge,
+현대차 시가총액은?,시가총액은 실시간 주가 기반 계산이 필요합니다,edge_cases,llm_judge,
+삼성전자 매출 알려줘,삼성전자 2024년 매출액은 약 300.87조원입니다,edge_cases,llm_judge,
+하이닉스 영업이익은?,SK하이닉스로 해석하여 약 23.47조원,edge_cases,llm_judge,
