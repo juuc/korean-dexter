@@ -285,8 +285,8 @@ src/
 
 ### 📋 Phase 4: Extended Data (계획)
 - [ ] Demo mode ([#19](https://github.com/juuc/korean-dexter/issues/19))
-- [ ] BOK integration ([#16](https://github.com/juuc/korean-dexter/issues/16))
-- [ ] KOSIS integration ([#17](https://github.com/juuc/korean-dexter/issues/17))
+- [x] BOK integration ([#16](https://github.com/juuc/korean-dexter/issues/16))
+- [x] KOSIS integration ([#17](https://github.com/juuc/korean-dexter/issues/17))
 - [ ] BigKinds integration ([#18](https://github.com/juuc/korean-dexter/issues/18))
 
 ---

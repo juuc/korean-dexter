@@ -20,10 +20,25 @@ import {
   getHistoricalPrices,
   getMarketIndex,
 } from '@/tools/core/kis/tools.js';
+import { BokClient, type BokClientLike } from '@/tools/core/bok/client.js';
+import {
+  getEconomicIndicator,
+  getKeyStatisticsList,
+  searchStatisticTables,
+} from '@/tools/core/bok/tools.js';
+import { BOK_INDICATORS } from '@/tools/core/bok/types.js';
+import { KosisClient, type KosisClientLike } from '@/tools/core/kosis/client.js';
+import {
+  getKosisData,
+  searchKosisTables,
+} from '@/tools/core/kosis/tools.js';
+import { KOSIS_TABLES } from '@/tools/core/kosis/types.js';
 import { CorpCodeResolver } from '@/mapping/corp-code-resolver.js';
 import {
   checkOpenDartApiKey,
   checkKisCredentials,
+  checkBokApiKey,
+  checkKosisApiKey,
 } from '@/utils/env.js';
 import { formatKoreanError } from '@/tools/error-messages.js';
 import type { RegisteredTool } from './registry.js';
@@ -35,6 +50,15 @@ import {
   GET_HISTORICAL_PRICES_DESCRIPTION,
   GET_MARKET_INDEX_DESCRIPTION,
 } from './descriptions/korean-tools.js';
+import {
+  GET_ECONOMIC_INDICATOR_DESCRIPTION,
+  GET_KEY_STATISTICS_DESCRIPTION,
+  SEARCH_BOK_TABLES_DESCRIPTION,
+} from './descriptions/bok-tools.js';
+import {
+  GET_KOSIS_DATA_DESCRIPTION,
+  SEARCH_KOSIS_TABLES_DESCRIPTION,
+} from './descriptions/kosis-tools.js';
 
 import { logger } from '@/utils/logger.js';
 import { homedir } from 'node:os';
@@ -60,6 +84,22 @@ function getKisClient(): KisClientLike {
   return _kisClient;
 }
 
+let _bokClient: BokClientLike | null = null;
+function getBokClient(): BokClientLike {
+  if (!_bokClient) {
+    _bokClient = new BokClient();
+  }
+  return _bokClient;
+}
+
+let _kosisClient: KosisClientLike | null = null;
+function getKosisClient(): KosisClientLike {
+  if (!_kosisClient) {
+    _kosisClient = new KosisClient();
+  }
+  return _kosisClient;
+}
+
 /**
  * Override the DART client (used for testing with fixtures).
  */
@@ -72,6 +112,20 @@ export function setDartClient(client: DartClientLike): void {
  */
 export function setKisClient(client: KisClientLike): void {
   _kisClient = client;
+}
+
+/**
+ * Override the BOK client (used for testing with fixtures).
+ */
+export function setBokClient(client: BokClientLike): void {
+  _bokClient = client;
+}
+
+/**
+ * Override the KOSIS client (used for testing with fixtures).
+ */
+export function setKosisClient(client: KosisClientLike): void {
+  _kosisClient = client;
 }
 
 let _demoMode = false;
@@ -89,6 +143,8 @@ export function setDemoMode(enabled: boolean): void {
 export function resetClients(): void {
   _dartClient = null;
   _kisClient = null;
+  _bokClient = null;
+  _kosisClient = null;
   _resolver = null;
   _resolverInitialized = false;
   _demoMode = false;
@@ -500,6 +556,313 @@ function createGetMarketIndexTool(): RegisteredTool {
 }
 
 // ---------------------------------------------------------------------------
+// BOK ECOS tool factories
+// ---------------------------------------------------------------------------
+
+function createGetEconomicIndicatorTool(): RegisteredTool {
+  const bokIndicatorNames = Object.values(BOK_INDICATORS)
+    .map((i) => `${i.name}(${i.table})`)
+    .join(', ');
+
+  const economicIndicator = tool(
+    async (input: {
+      table_code: string;
+      item_code: string;
+      period_type: string;
+      start_date: string;
+      end_date: string;
+    }): Promise<string> => {
+      const client = getBokClient();
+      const result = await getEconomicIndicator(
+        client,
+        input.table_code,
+        input.item_code,
+        input.period_type,
+        input.start_date,
+        input.end_date
+      );
+
+      if (!result.success || !result.data) {
+        const err = formatKoreanError(result.error?.code ?? 'API_ERROR', 'get_economic_indicator', result.error?.message);
+        return JSON.stringify({ error: true, ...err });
+      }
+
+      const data = result.data;
+      return JSON.stringify({
+        statCode: data.statCode,
+        statName: data.statName,
+        itemName: data.itemName,
+        unit: data.unit,
+        count: data.values.length,
+        values: data.values.map((v) => ({
+          period: v.period.label,
+          periodEn: v.period.labelEn,
+          value: v.displayValue,
+        })),
+      });
+    },
+    {
+      name: 'get_economic_indicator',
+      description:
+        'Get economic indicators from BOK ECOS (Bank of Korea). ' +
+        `Common: ${bokIndicatorNames}. ` +
+        'Use search_bok_tables to find table codes for other indicators.',
+      schema: z.object({
+        table_code: z
+          .string()
+          .describe('BOK statistical table code (e.g., "722Y001" for base rate)'),
+        item_code: z
+          .string()
+          .describe('Item code within the table (e.g., "0101000"). Use "*" for all items'),
+        period_type: z
+          .string()
+          .describe('"A" annual, "Q" quarterly, "M" monthly, "D" daily'),
+        start_date: z
+          .string()
+          .describe('Start date matching period type (annual="2020", monthly="202001", quarterly="2020Q1")'),
+        end_date: z
+          .string()
+          .describe('End date matching period type'),
+      }),
+    }
+  );
+
+  return {
+    name: 'get_economic_indicator',
+    tool: economicIndicator,
+    description: GET_ECONOMIC_INDICATOR_DESCRIPTION,
+  };
+}
+
+function createGetKeyStatisticsTool(): RegisteredTool {
+  const keyStatistics = tool(
+    async (): Promise<string> => {
+      const client = getBokClient();
+      const result = await getKeyStatisticsList(client);
+
+      if (!result.success || !result.data) {
+        const err = formatKoreanError(result.error?.code ?? 'API_ERROR', 'get_key_statistics', result.error?.message);
+        return JSON.stringify({ error: true, ...err });
+      }
+
+      const data = result.data;
+      return JSON.stringify({
+        totalCount: data.totalCount,
+        items: data.items.map((item) => ({
+          category: item.className,
+          name: item.name,
+          value: item.value,
+          unit: item.unit,
+          cycle: item.cycle,
+          time: item.time,
+        })),
+      });
+    },
+    {
+      name: 'get_key_statistics',
+      description:
+        'Get top 100 key economic indicators from BOK ECOS at a glance. ' +
+        'No input required. Returns latest values for major macro indicators.',
+      schema: z.object({}),
+    }
+  );
+
+  return {
+    name: 'get_key_statistics',
+    tool: keyStatistics,
+    description: GET_KEY_STATISTICS_DESCRIPTION,
+  };
+}
+
+function createSearchBokTablesTool(): RegisteredTool {
+  const searchBokTables = tool(
+    async (input: { query: string }): Promise<string> => {
+      const client = getBokClient();
+      const result = await searchStatisticTables(client, input.query);
+
+      if (!result.success || !result.data) {
+        const err = formatKoreanError(result.error?.code ?? 'API_ERROR', 'search_bok_tables', result.error?.message);
+        return JSON.stringify({ error: true, ...err });
+      }
+
+      const data = result.data;
+      return JSON.stringify({
+        totalCount: data.totalCount,
+        tables: data.tables.map((t) => ({
+          statCode: t.statCode,
+          statName: t.statName,
+          cycle: t.cycle,
+          searchable: t.searchable,
+          orgName: t.orgName,
+        })),
+      });
+    },
+    {
+      name: 'search_bok_tables',
+      description:
+        'Search BOK ECOS statistical tables by keyword. ' +
+        'Use this to find table codes before calling get_economic_indicator.',
+      schema: z.object({
+        query: z
+          .string()
+          .describe('Search keyword in Korean or English (e.g., "금리", "환율", "GDP")'),
+      }),
+    }
+  );
+
+  return {
+    name: 'search_bok_tables',
+    tool: searchBokTables,
+    description: SEARCH_BOK_TABLES_DESCRIPTION,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// KOSIS tool factories
+// ---------------------------------------------------------------------------
+
+function createGetKosisDataTool(): RegisteredTool {
+  const kosisTableNames = Object.values(KOSIS_TABLES)
+    .map((t) => `${t.name}(${t.id})`)
+    .join(', ');
+
+  const kosisData = tool(
+    async (input: {
+      table_id: string;
+      org_id?: string;
+      period_type?: string;
+      start_period?: string;
+      end_period?: string;
+      item_id?: string;
+      obj_l1?: string;
+      obj_l2?: string;
+    }): Promise<string> => {
+      const client = getKosisClient();
+      const result = await getKosisData(client, input.table_id, {
+        orgId: input.org_id,
+        periodType: input.period_type,
+        startPeriod: input.start_period,
+        endPeriod: input.end_period,
+        itemId: input.item_id,
+        objL1: input.obj_l1,
+        objL2: input.obj_l2,
+      });
+
+      if (!result.success || !result.data) {
+        const err = formatKoreanError(result.error?.code ?? 'API_ERROR', 'get_kosis_data', result.error?.message);
+        return JSON.stringify({ error: true, ...err });
+      }
+
+      const data = result.data;
+      return JSON.stringify({
+        tableId: data.tableId,
+        tableName: data.tableName,
+        totalCount: data.totalCount,
+        items: data.items.map((item) => ({
+          itemName: item.itemName,
+          period: item.period,
+          value: item.value,
+          unit: item.unit,
+          dimensions: item.dimensions.map((d) => d.name).join(' > ') || undefined,
+        })),
+      });
+    },
+    {
+      name: 'get_kosis_data',
+      description:
+        'Get statistical data from KOSIS (Korean Statistical Information Service). ' +
+        `Common tables: ${kosisTableNames}. ` +
+        'Use search_kosis_tables to find table IDs for other statistics.',
+      schema: z.object({
+        table_id: z
+          .string()
+          .describe('KOSIS table ID (e.g., "DT_1B040A3" for population census)'),
+        org_id: z
+          .string()
+          .optional()
+          .describe('Organization ID that publishes the table'),
+        period_type: z
+          .string()
+          .optional()
+          .describe('"Y" yearly, "Q" quarterly, "M" monthly'),
+        start_period: z
+          .string()
+          .optional()
+          .describe('Start period (e.g., "2020" for annual, "202401" for monthly)'),
+        end_period: z
+          .string()
+          .optional()
+          .describe('End period'),
+        item_id: z
+          .string()
+          .optional()
+          .describe('Specific item ID filter'),
+        obj_l1: z
+          .string()
+          .optional()
+          .describe('Level 1 classification filter'),
+        obj_l2: z
+          .string()
+          .optional()
+          .describe('Level 2 classification filter'),
+      }),
+    }
+  );
+
+  return {
+    name: 'get_kosis_data',
+    tool: kosisData,
+    description: GET_KOSIS_DATA_DESCRIPTION,
+  };
+}
+
+function createSearchKosisTablesTool(): RegisteredTool {
+  const searchKosisTbls = tool(
+    async (input: { query: string; org_id?: string }): Promise<string> => {
+      const client = getKosisClient();
+      const result = await searchKosisTables(client, input.query, input.org_id);
+
+      if (!result.success || !result.data) {
+        const err = formatKoreanError(result.error?.code ?? 'API_ERROR', 'search_kosis_tables', result.error?.message);
+        return JSON.stringify({ error: true, ...err });
+      }
+
+      const data = result.data;
+      return JSON.stringify({
+        totalCount: data.totalCount,
+        tables: data.tables.map((t) => ({
+          tableId: t.tableId,
+          tableName: t.tableName,
+          orgId: t.orgId,
+          periodType: t.periodType,
+        })),
+      });
+    },
+    {
+      name: 'search_kosis_tables',
+      description:
+        'Search KOSIS statistical tables by keyword. ' +
+        'Use this to find table IDs before calling get_kosis_data.',
+      schema: z.object({
+        query: z
+          .string()
+          .describe('Search keyword in Korean or English (e.g., "인구", "고용", "무역")'),
+        org_id: z
+          .string()
+          .optional()
+          .describe('Optional organization ID to filter results'),
+      }),
+    }
+  );
+
+  return {
+    name: 'search_kosis_tables',
+    tool: searchKosisTbls,
+    description: SEARCH_KOSIS_TABLES_DESCRIPTION,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
 
@@ -525,6 +888,19 @@ export function createKoreanFinancialTools(): RegisteredTool[] {
     tools.push(createGetStockPriceTool());
     tools.push(createGetHistoricalPricesTool());
     tools.push(createGetMarketIndexTool());
+  }
+
+  // BOK ECOS tools — require BOK_API_KEY (or demo mode)
+  if (_demoMode || checkBokApiKey()) {
+    tools.push(createGetEconomicIndicatorTool());
+    tools.push(createGetKeyStatisticsTool());
+    tools.push(createSearchBokTablesTool());
+  }
+
+  // KOSIS tools — require KOSIS_API_KEY (or demo mode)
+  if (_demoMode || checkKosisApiKey()) {
+    tools.push(createGetKosisDataTool());
+    tools.push(createSearchKosisTablesTool());
   }
 
   return tools;

@@ -64,6 +64,14 @@ const TOOL_SPECIFIC_OVERRIDES: Readonly<Record<string, Partial<ErrorTemplate>>> 
   'get_financial_statements:NOT_FOUND': {
     message: '요청하신 재무제표 데이터를 찾을 수 없습니다. 다른 기간 또는 보고서 유형을 시도해보세요',
   },
+  'get_economic_indicator:NOT_FOUND': {
+    message: '요청하신 경제지표 데이터를 찾을 수 없습니다. 테이블코드, 항목코드, 기간을 확인해주세요',
+    suggestedAction: 'Use search_bok_tables to find the correct table code',
+  },
+  'get_kosis_data:NOT_FOUND': {
+    message: '요청하신 통계 데이터를 찾을 수 없습니다. 테이블ID와 조회 조건을 확인해주세요',
+    suggestedAction: 'Use search_kosis_tables to find the correct table ID',
+  },
 };
 
 /**

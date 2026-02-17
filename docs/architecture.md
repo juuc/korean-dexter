@@ -7,7 +7,7 @@ Korean Dexter는 한국 주식 시장을 위한 자율 AI 금융 리서치 에�
 **핵심 특징:**
 - **자율성**: LLM 기반 추론으로 도구 호출 계획 수립
 - **한국 시장 특화**: 연결재무제표 우선, 조원/억원 표기, 한국어 프롬프트
-- **다중 데이터 소스**: OpenDART (재무제표, 공시) + KIS API (주가, 시세)
+- **다중 데이터 소스**: OpenDART (재무제표, 공시) + KIS API (주가, 시세) + BOK ECOS (경제지표) + KOSIS (국가통계)
 - **실시간 터미널 UI**: React Ink 기반 대화형 인터페이스
 
 ---
@@ -60,6 +60,18 @@ Korean Dexter는 한국 주식 시장을 위한 자율 AI 금융 리서치 에�
 │  - 주주현황       │         │  - 투자자 동향    │
 │  - 배당내역       │         │  - 시장 지수      │
 │                  │         │  - 종목 검색      │
+└──────────────────┘         └──────────────────┘
+       │                              │
+       ▼                              ▼
+┌──────────────────┐         ┌──────────────────┐
+│   BOK ECOS       │         │     KOSIS        │
+│ tools/core/      │         │  tools/core/     │
+│   bok/           │         │    kosis/        │
+│                  │         │                  │
+│  - 기준금리       │         │  - 인구통계       │
+│  - 환율          │         │  - 고용통계       │
+│  - GDP/CPI      │         │  - 산업동향       │
+│  - 통화량(M2)    │         │  - 무역통계       │
 └──────────────────┘         └──────────────────┘
        │                              │
        ▼                              ▼
@@ -144,6 +156,8 @@ interface Scratchpad {
 [출처]
 - OpenDART 사업보고서 (2024년 12월 31일)
 - KIS API 주가 데이터 (2025-01-15)
+- BOK ECOS 기준금리 (2025-01-15)
+- KOSIS 경제활동인구조사 (2024년)
 ```
 
 ---
@@ -158,13 +172,21 @@ interface Scratchpad {
 export const toolRegistry = {
   // OpenDART 도구
   'get_financial_statements': getFinancialStatementsTool,
-  'get_disclosure_list': getDisclosureListTool,
-  'get_shareholder_info': getShareholderInfoTool,
+  'get_company_info': getCompanyInfoTool,
 
   // KIS API 도구
   'get_stock_price': getStockPriceTool,
-  'get_investor_flow': getInvestorFlowTool,
-  'search_stock_code': searchStockCodeTool,
+  'get_historical_prices': getHistoricalPricesTool,
+  'get_market_index': getMarketIndexTool,
+
+  // BOK ECOS 도구
+  'get_economic_indicator': getEconomicIndicatorTool,
+  'get_key_statistics': getKeyStatisticsTool,
+  'search_bok_tables': searchBokTablesTool,
+
+  // KOSIS 도구
+  'get_kosis_data': getKosisDataTool,
+  'search_kosis_tables': searchKosisTablesTool,
 };
 ```
 
@@ -575,13 +597,14 @@ korean-dexter/
 
 ### 1. 새로운 데이터 소스 추가
 
-새로운 API (예: Bank of Korea 경제통계)를 추가하려면:
+새로운 API를 추가하려면 (BOK ECOS, KOSIS 구현 패턴 참고):
 
-1. `src/tools/bok/` 디렉토리 생성
-2. `BokTool` 클래스 구현 (LangChain Tool 인터페이스)
-3. `src/tools/registry.ts`에 등록
-4. `src/tools/descriptions/korean-tools.ts`에 한국어 설명 추가
-5. Rate Limiter 설정 추가
+1. `src/tools/core/{api}/` 디렉토리 생성 (`types.ts`, `client.ts`, `tools.ts`, `tools.test.ts`)
+2. Client 클래스 구현 (`ClientLike` 인터페이스 + rate limiter + two-tier cache)
+3. `src/tools/descriptions/{api}-tools.ts`에 한국어 설명 추가
+4. `src/tools/langchain-tools.ts`에 LangChain 도구 팩토리 + 조건부 등록
+5. `src/utils/env.ts`에 API key 체크 함수 추가
+6. `src/infra/rate-limiter.ts`의 `API_RATE_LIMITS`에 설정 추가
 
 ### 2. 새로운 LLM 프로바이더 추가
 

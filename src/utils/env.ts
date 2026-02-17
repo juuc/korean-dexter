@@ -159,3 +159,39 @@ export function saveKisAppKey(appKey: string): boolean {
 export function saveKisAppSecret(appSecret: string): boolean {
   return saveApiKeyToEnv('KIS_APP_SECRET', appSecret);
 }
+
+// ============================================================================
+// BOK ECOS API Key
+// ============================================================================
+
+/**
+ * Get BOK ECOS API key from environment
+ */
+export function getBokApiKey(): string | undefined {
+  return process.env.BOK_API_KEY;
+}
+
+/**
+ * Check if BOK API key exists
+ */
+export function checkBokApiKey(): boolean {
+  return checkApiKeyExists('BOK_API_KEY');
+}
+
+// ============================================================================
+// KOSIS API Key
+// ============================================================================
+
+/**
+ * Get KOSIS API key from environment
+ */
+export function getKosisApiKey(): string | undefined {
+  return process.env.KOSIS_API_KEY;
+}
+
+/**
+ * Check if KOSIS API key exists
+ */
+export function checkKosisApiKey(): boolean {
+  return checkApiKeyExists('KOSIS_API_KEY');
+}

@@ -82,7 +82,7 @@ tr_id: {transaction_id}  // Different per endpoint
 
 ---
 
-## 3. BOK ECOS (한국은행 경제통계시스템) — v1.1
+## 3. BOK ECOS (한국은행 경제통계시스템)
 
 - **Base URL**: `https://ecos.bok.or.kr/api/`
 - **Auth**: API key
@@ -100,7 +100,7 @@ tr_id: {transaction_id}  // Different per endpoint
 
 ---
 
-## 4. KOSIS (통계청 국가통계포털) — v1.1
+## 4. KOSIS (통계청 국가통계포털)
 
 - **Base URL**: `https://kosis.kr/openapi/`
 - **Auth**: API key

@@ -15,7 +15,7 @@ export interface RegisteredTool {
 
 /**
  * Get all registered tools with their descriptions.
- * Includes Korean financial tools (OpenDART, KIS) based on available API keys.
+ * Includes Korean financial tools (OpenDART, KIS, BOK, KOSIS) based on available API keys.
  */
 export function getToolRegistry(_model: string): RegisteredTool[] {
   return createKoreanFinancialTools();

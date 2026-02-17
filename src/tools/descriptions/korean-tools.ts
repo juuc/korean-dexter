@@ -128,8 +128,12 @@ export const TOOL_USAGE_OVERVIEW = `### Tool Usage Flow (권장 사용 흐름)
 2. Use the returned corp_code for OpenDART tools (financials, company info)
 3. Use the returned stock_code for KIS tools (prices, historical data)
 4. For market indices, use get_market_index directly (no resolution needed)
+5. For macroeconomic indicators, use BOK tools directly (no resolution needed)
+6. For national statistics, use KOSIS tools directly (no resolution needed)
 
 ### Available API Sources
 
 - **OpenDART** (전자공시시스템): Financial statements, company info, disclosures
-- **KIS** (한국투자증권): Stock prices, historical data, market indices`;
+- **KIS** (한국투자증권): Stock prices, historical data, market indices
+- **BOK ECOS** (한국은행 경제통계): Interest rates, GDP, CPI, exchange rates, money supply
+- **KOSIS** (국가통계포털): Population, employment, industry output, trade statistics`;

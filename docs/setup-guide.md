@@ -11,8 +11,8 @@ Korean Dexter를 실행하려면 한국 금융 API 키와 LLM 프로바이더 AP
 ## 선택 API 키
 
 - ⭕ **LangSmith API 키** - 평가 및 모니터링 (Phase 3)
-- ⭕ **BOK API 키** - 한국은행 경제 통계 (v1.1 예정)
-- ⭕ **KOSIS API 키** - 국가통계포털 (v1.1 예정)
+- ⭕ **BOK API 키** - 한국은행 경제 통계 (금리, GDP, CPI, 환율)
+- ⭕ **KOSIS API 키** - 국가통계포털 (인구, 고용, 산업, 무역)
 - ⭕ **BigKinds API 키** - 뉴스 데이터 (v1.1 예정)
 
 ---
@@ -220,12 +220,36 @@ OPENAI_API_KEY=your_api_key_here
 LANGCHAIN_API_KEY=your_api_key_here
 ```
 
-### 4.2 BOK, KOSIS, BigKinds (v1.1 예정)
+### 4.2 BOK (한국은행 경제통계)
 
-이 API들은 **v1.1 릴리스**에서 지원될 예정입니다. 현재는 설정하지 않아도 됩니다.
+1. **BOK ECOS 사이트 접속**: https://ecos.bok.or.kr/api/#/
+2. 회원가입 및 로그인
+3. **[인증키 신청]** 클릭
+4. API 키 복사
 
-- **BOK (한국은행)**: https://ecos.bok.or.kr
-- **KOSIS (통계청)**: https://kosis.kr
+```bash
+BOK_API_KEY=your_bok_api_key_here
+```
+
+**사용 제한**: 일일 5,000건, 초당 2건
+
+### 4.3 KOSIS (국가통계포털)
+
+1. **KOSIS OpenAPI 사이트 접속**: https://kosis.kr/openapi/
+2. 회원가입 및 로그인
+3. **[인증키 발급]** 클릭
+4. API 키 복사
+
+```bash
+KOSIS_API_KEY=your_kosis_api_key_here
+```
+
+**사용 제한**: 일일 3,000건, 초당 1건
+
+### 4.4 BigKinds (뉴스 데이터 — 미지원)
+
+BigKinds API는 현재 지원되지 않습니다.
+
 - **BigKinds (뉴스)**: https://www.bigkinds.or.kr
 
 ---
@@ -258,10 +282,9 @@ GOOGLE_API_KEY=your_google_key_here
 # 선택 - LangSmith (평가용)
 # LANGCHAIN_API_KEY=your_langchain_key_here
 
-# 선택 - v1.1 예정
-# BOK_API_KEY=
-# KOSIS_API_KEY=
-# BIGKINDS_API_KEY=
+# 선택 - 매크로 경제 데이터
+# BOK_API_KEY=your_bok_api_key_here
+# KOSIS_API_KEY=your_kosis_api_key_here
 ```
 
 ### 5.3 환경 변수 검증
