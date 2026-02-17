@@ -131,7 +131,7 @@ function buildNormalizedAmount(
   const value = parseRawAmount(raw);
   return {
     value,
-    displayValue: formatAmount(value),
+    displayValue: formatAmount(value, { precision: 2 }),
     unit: 'KRW',
     scale: determineScale(value),
     isEstimate: false,
