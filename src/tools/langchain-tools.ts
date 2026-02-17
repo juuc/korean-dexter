@@ -74,6 +74,15 @@ export function setKisClient(client: KisClientLike): void {
   _kisClient = client;
 }
 
+let _demoMode = false;
+
+/**
+ * Enable or disable demo mode (creates all tools regardless of API keys).
+ */
+export function setDemoMode(enabled: boolean): void {
+  _demoMode = enabled;
+}
+
 /**
  * Reset clients to null (cleanup after fixture mode).
  */
@@ -82,6 +91,7 @@ export function resetClients(): void {
   _kisClient = null;
   _resolver = null;
   _resolverInitialized = false;
+  _demoMode = false;
 }
 
 let _resolver: CorpCodeResolver | null = null;
@@ -107,6 +117,24 @@ async function getResolver(): Promise<CorpCodeResolver> {
     }
   }
   return _resolver;
+}
+
+/**
+ * Pre-populate the resolver with fixture data (for demo mode).
+ */
+export function setResolverData(mappings: ReadonlyArray<{ corp_code: string; corp_name: string; stock_code: string }>): void {
+  if (!_resolver) {
+    _resolver = new CorpCodeResolver();
+  }
+  // Convert to CorpMapping format with empty modify_date
+  const corpMappings = mappings.map(m => ({
+    corp_code: m.corp_code,
+    corp_name: m.corp_name,
+    stock_code: m.stock_code,
+    modify_date: '',
+  }));
+  _resolver.loadFromData(corpMappings);
+  _resolverInitialized = true;
 }
 
 // ---------------------------------------------------------------------------
@@ -478,6 +506,7 @@ function createGetMarketIndexTool(): RegisteredTool {
 /**
  * Create all available Korean financial tools based on configured API keys.
  * Tools for unavailable APIs are silently excluded (no crash).
+ * In demo mode, all tools are created regardless of API keys.
  */
 export function createKoreanFinancialTools(): RegisteredTool[] {
   const tools: RegisteredTool[] = [];
@@ -485,14 +514,14 @@ export function createKoreanFinancialTools(): RegisteredTool[] {
   // resolve_company is always available (uses local data, no API key needed)
   tools.push(createResolveCompanyTool());
 
-  // OpenDART tools — require OPENDART_API_KEY
-  if (checkOpenDartApiKey()) {
+  // OpenDART tools — require OPENDART_API_KEY (or demo mode)
+  if (_demoMode || checkOpenDartApiKey()) {
     tools.push(createGetFinancialStatementsTool());
     tools.push(createGetCompanyInfoTool());
   }
 
-  // KIS tools — require KIS_APP_KEY + KIS_APP_SECRET
-  if (checkKisCredentials()) {
+  // KIS tools — require KIS_APP_KEY + KIS_APP_SECRET (or demo mode)
+  if (_demoMode || checkKisCredentials()) {
     tools.push(createGetStockPriceTool());
     tools.push(createGetHistoricalPricesTool());
     tools.push(createGetMarketIndexTool());

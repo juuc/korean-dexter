@@ -1,1 +1,9 @@
-{"companies":[]}
+{
+  "companies": [
+    {
+      "corpCode": "00000001",
+      "corpName": "Test Company",
+      "fixturePath": "00000001.json"
+    }
+  ]
+}
