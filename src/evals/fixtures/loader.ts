@@ -73,7 +73,7 @@ function paramsMatch(
   requestParams: Record<string, string>
 ): boolean {
   // Keys to ignore when comparing params
-  const ignoreKeys = new Set(['crtfc_key', 'appkey', 'appsecret', 'tr_id']);
+  const ignoreKeys = new Set(['crtfc_key', 'appkey', 'appsecret', 'tr_id', 'fs_div']);
 
   // Get all unique keys from both objects, excluding ignored keys
   const allKeys = new Set([

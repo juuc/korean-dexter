@@ -14,7 +14,7 @@ import React from 'react';
 import { render } from 'ink';
 import { Client } from 'langsmith';
 import type { EvaluationResult } from 'langsmith/evaluation';
-import { ChatOpenAI } from '@langchain/openai';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
@@ -153,7 +153,7 @@ function shuffleArray<T>(array: T[]): T[] {
 // ============================================================================
 
 async function target(inputs: { question: string }): Promise<{ answer: string }> {
-  const agent = Agent.create({ model: 'gpt-5.2', maxIterations: 10 });
+  const agent = Agent.create({ model: 'gemini-3-pro-preview', maxIterations: 10 });
   let answer = '';
 
   for await (const event of agent.run(inputs.question)) {
@@ -166,7 +166,7 @@ async function target(inputs: { question: string }): Promise<{ answer: string }>
 }
 
 // ============================================================================
-// Correctness evaluator - LLM-as-judge using gpt-5.2
+// Correctness evaluator - LLM-as-judge using Gemini
 // ============================================================================
 
 const EvaluatorOutputSchema = z.object({
@@ -175,9 +175,9 @@ const EvaluatorOutputSchema = z.object({
   hallucination: z.boolean(),
 });
 
-const llm = new ChatOpenAI({
-  model: 'gpt-5.2',
-  apiKey: process.env.OPENAI_API_KEY,
+const llm = new ChatGoogleGenerativeAI({
+  model: 'gemini-3-pro-preview',
+  apiKey: process.env.GOOGLE_API_KEY,
 });
 
 const structuredLlm = llm.withStructuredOutput(EvaluatorOutputSchema);
@@ -273,7 +273,7 @@ function createEvaluationRunner(options: EvalRunnerOptions = {}) {
     // Wire fixture clients to replace real API clients
     if (useFixtures) {
       const { loadFixtureIndex, loadFixtureSet, createMockOpenDartClient, createMockKISClient } = await import('./fixtures/index.js');
-      const { setDartClient, setKisClient } = await import('../tools/langchain-tools.js');
+      const { setDartClient, setKisClient, setResolverData, setDemoMode } = await import('../tools/langchain-tools.js');
 
       const index = loadFixtureIndex();
       const fixtureSets = new Map<string, FixtureSet>();
@@ -285,7 +285,23 @@ function createEvaluationRunner(options: EvalRunnerOptions = {}) {
       if (fixtureSets.size > 0) {
         setDartClient(createMockOpenDartClient(fixtureSets));
         setKisClient(createMockKISClient(fixtureSets));
+
+        // Pre-populate corp code resolver from fixture company responses
+        const resolverData = Array.from(fixtureSets.values()).map(set => {
+          // Extract stock_code from the company endpoint response
+          const companyResponse = set.responses.find(r => r.endpoint === 'company');
+          const stockCode = (companyResponse?.response as Record<string, string>)?.stock_code ?? '';
+          return {
+            corp_code: set.corpCode,
+            corp_name: set.corpName,
+            stock_code: stockCode,
+          };
+        });
+        setResolverData(resolverData);
       }
+
+      // Enable demo mode so all tools are created regardless of API keys
+      setDemoMode(true);
     }
 
     // Create LangSmith client
