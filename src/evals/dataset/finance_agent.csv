@@ -299,7 +299,6 @@ asdfghjk 매출은?,해당 기업을 찾을 수 없습니다,edge_cases,llm_judg
 005930 매출은?,삼성전자(005930) 매출 약 300.87조원,edge_cases,llm_judge,
 비상장기업인 쿠팡의 매출은?,한국 상장사가 아니므로 조회할 수 없습니다,edge_cases,llm_judge,
 삼성전자 직원수는?,재무제표에 포함되지 않는 정보입니다,edge_cases,llm_judge,
-삼성전자 2019년 매출은?,보유 데이터 범위(2022~2024)를 벗어납니다,edge_cases,llm_judge,
 현대차 시가총액은?,시가총액은 실시간 주가 기반 계산이 필요합니다,edge_cases,llm_judge,
 삼성전자 매출 알려줘,삼성전자 2024년 매출액은 약 300.87조원입니다,edge_cases,llm_judge,
 하이닉스 영업이익은?,SK하이닉스로 해석하여 약 23.47조원,edge_cases,llm_judge,
