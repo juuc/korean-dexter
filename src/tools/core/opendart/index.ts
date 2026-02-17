@@ -18,6 +18,11 @@ export {
 export {
   normalizeAccountName,
   getAccountLabel,
+  AccountMapper,
+  accountMapper,
   ACCOUNT_MAPPINGS,
   type AccountCategory,
+  type AccountMapping,
+  type MappingCategory,
+  type StatementType,
 } from './account-mapper.js';
