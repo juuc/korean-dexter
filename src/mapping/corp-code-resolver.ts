@@ -10,6 +10,7 @@
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
+import { unzipSync } from 'fflate';
 import type { CorpMapping, CorpCodeResult } from './types.js';
 import { jamoSimilarity } from './jamo.js';
 
@@ -57,8 +58,7 @@ export class CorpCodeResolver {
 
   /**
    * Download corp code mappings from OpenDART API.
-   * Fetches the corpCode.xml ZIP file from the API.
-   * Note: ZIP parsing is not yet implemented — throws after successful download.
+   * Fetches the corpCode.xml ZIP, decompresses, parses XML, and builds indices.
    */
   async loadFromApi(apiKey: string): Promise<void> {
     const url = `https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key=${apiKey}`;
@@ -70,13 +70,18 @@ export class CorpCodeResolver {
       );
     }
 
-    // TODO: Parse the ZIP response containing corpCode.xml
-    // The response is a ZIP file with a single XML file inside.
-    // XML structure: <result><list><corp_code/><corp_name/><stock_code/><modify_date/></list>...</result>
-    // Consider using a lightweight ZIP library (e.g., fflate) for decompression.
-    throw new Error(
-      'ZIP parsing not yet implemented. Use loadFromData() or loadFromCache() instead.'
-    );
+    const zipBuffer = new Uint8Array(await response.arrayBuffer());
+    const unzipped = unzipSync(zipBuffer);
+
+    // Find the XML file inside the ZIP
+    const xmlFileName = Object.keys(unzipped).find((name) => name.endsWith('.xml'));
+    if (!xmlFileName) {
+      throw new Error('No XML file found in corpCode.xml ZIP response');
+    }
+
+    const xmlContent = new TextDecoder('utf-8').decode(unzipped[xmlFileName]);
+    this.mappings = parseCorpCodeXml(xmlContent);
+    this.buildIndices();
   }
 
   /**
@@ -279,6 +284,41 @@ export class CorpCodeResolver {
       }
     }
   }
+}
+
+/**
+ * Parse OpenDART corpCode.xml content into CorpMapping array.
+ * XML structure: <result><list><corp_code/><corp_name/><stock_code/><modify_date/></list>...</result>
+ */
+function parseCorpCodeXml(xml: string): CorpMapping[] {
+  const results: CorpMapping[] = [];
+  const listRegex = /<list>([\s\S]*?)<\/list>/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = listRegex.exec(xml)) !== null) {
+    const block = match[1];
+    const corpCode = extractXmlTag(block, 'corp_code');
+    const corpName = extractXmlTag(block, 'corp_name');
+    const stockCode = extractXmlTag(block, 'stock_code');
+    const modifyDate = extractXmlTag(block, 'modify_date');
+
+    if (corpCode && corpName) {
+      results.push({
+        corp_code: corpCode,
+        corp_name: corpName,
+        stock_code: stockCode?.trim() ?? '',
+        modify_date: modifyDate ?? '',
+      });
+    }
+  }
+
+  return results;
+}
+
+function extractXmlTag(block: string, tag: string): string | null {
+  const regex = new RegExp(`<${tag}>([^<]*)</${tag}>`);
+  const match = regex.exec(block);
+  return match ? match[1] : null;
 }
 
 /** Factory function to create a new CorpCodeResolver instance. */
