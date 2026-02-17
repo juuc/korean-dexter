@@ -12,7 +12,8 @@
     "dev": "bun --watch run src/index.tsx",
     "typecheck": "tsc --noEmit",
     "test": "bun test",
-    "test:watch": "bun test --watch"
+    "test:watch": "bun test --watch",
+    "docs:check": "markdown-link-check README.md CONTRIBUTING.md docs/*.md --config .markdown-link-check.json"
   },
   "dependencies": {
     "@langchain/anthropic": "^1.1.3",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/react": "^19.2.7",
+    "markdown-link-check": "^3.14.2",
     "typescript": "^5.9.3"
   }
 }
