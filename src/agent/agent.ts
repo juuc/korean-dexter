@@ -1,6 +1,6 @@
 import { AIMessage } from '@langchain/core/messages';
 import { StructuredToolInterface } from '@langchain/core/tools';
-import { callLlm } from '../model/llm.js';
+import { callLlm, DEFAULT_MODEL } from '../model/llm.js';
 import { getTools } from '../tools/registry.js';
 import { buildSystemPrompt, buildIterationPrompt, buildFinalAnswerPrompt } from '../agent/prompts.js';
 import { extractTextContent, hasToolCalls } from '../utils/ai-message.js';
@@ -10,9 +10,8 @@ import type { AgentConfig, AgentEvent, ContextClearedEvent, TokenUsage } from '.
 import { createRunContext, type RunContext } from './run-context.js';
 import { buildFinalAnswerContext } from './final-answer-context.js';
 import { AgentToolExecutor } from './tool-executor.js';
+import { logger } from '../utils/logger.js';
 
-
-const DEFAULT_MODEL = 'gpt-5.2';
 const DEFAULT_MAX_ITERATIONS = 10;
 
 /**
@@ -57,11 +56,10 @@ export class Agent {
    * with threshold-based clearing of oldest results when context exceeds limit.
    */
   async *run(query: string, inMemoryHistory?: InMemoryChatHistory): AsyncGenerator<AgentEvent> {
-    const startTime = Date.now();
-
     if (this.tools.length === 0) {
-      yield { type: 'done', answer: 'No tools available. Please check your API key configuration.', toolCalls: [], iterations: 0, totalTime: Date.now() - startTime };
-      return;
+      logger.warn(
+        'No tools available. Set OPENDART_API_KEY and/or KIS_APP_KEY + KIS_APP_SECRET to enable financial data tools.'
+      );
     }
 
     const ctx = createRunContext(query);

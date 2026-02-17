@@ -1,5 +1,5 @@
 import { StructuredToolInterface } from '@langchain/core/tools';
-import { discoverSkills } from '../skills/index.js';
+import { createKoreanFinancialTools } from './langchain-tools.js';
 
 /**
  * A registered tool with its rich description for system prompt injection.
@@ -15,13 +15,10 @@ export interface RegisteredTool {
 
 /**
  * Get all registered tools with their descriptions.
- * Phase 2 will add OpenDART and KIS tools here.
+ * Includes Korean financial tools (OpenDART, KIS) based on available API keys.
  */
 export function getToolRegistry(_model: string): RegisteredTool[] {
-  // Tools will be registered here in Phase 2:
-  // - OpenDART tools (Issue #6)
-  // - KIS tools (Issue #8)
-  return [];
+  return createKoreanFinancialTools();
 }
 
 /**

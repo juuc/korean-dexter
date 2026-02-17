@@ -1,3 +1,9 @@
-// Tool descriptions will be added in Phase 2
-// - OpenDART tool descriptions (Issue #6)
-// - KIS tool descriptions (Issue #8)
+export {
+  RESOLVE_COMPANY_DESCRIPTION,
+  GET_FINANCIAL_STATEMENTS_DESCRIPTION,
+  GET_COMPANY_INFO_DESCRIPTION,
+  GET_STOCK_PRICE_DESCRIPTION,
+  GET_HISTORICAL_PRICES_DESCRIPTION,
+  GET_MARKET_INDEX_DESCRIPTION,
+  TOOL_USAGE_OVERVIEW,
+} from './korean-tools.js';
