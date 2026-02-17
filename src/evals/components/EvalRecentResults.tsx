@@ -47,9 +47,8 @@ export function EvalRecentResults({ results, maxDisplay = 5 }: EvalRecentResults
     <Box flexDirection="column" marginTop={1}>
       <Text color={colors.muted}>Recent:</Text>
       {recentResults.map((result, index) => {
-        const isCorrect = result.score === 1;
-        const icon = isCorrect ? '✓' : '✗';
-        const iconColor = isCorrect ? colors.success : colors.error;
+        const icon = result.score >= 0.75 ? '✓' : result.score >= 0.5 ? '△' : '✗';
+        const iconColor = result.score >= 0.75 ? colors.success : result.score >= 0.5 ? 'yellow' : colors.error;
 
         return (
           <Box key={index}>

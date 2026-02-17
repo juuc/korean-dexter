@@ -61,7 +61,7 @@ src/
     └── tools.test.ts            # 도구 통합 테스트
 ```
 
-**현재 상태**: 15개 테스트 파일, 375개 테스트 통과
+**현재 상태**: 17개 테스트 파일, 436개 테스트 통과
 
 ### 테스트 실행
 
@@ -93,6 +93,8 @@ bun test --watch
 | `tools/core/kis/*.test.ts` | KIS API 통합, 주가 데이터 처리 |
 | `tools/error-messages.test.ts` | 한국어 에러 메시지 생성 |
 | `utils/tokens.test.ts` | 토큰 카운팅, 한국어 multiplier |
+| `evals/fixtures/fixtures.test.ts` | Fixture 로딩, mock 클라이언트 |
+| `evals/scorers/numerical.test.ts` | 한국어 금액 파싱, 허용 오차 비교 |
 
 ### 테스트 작성 팁
 
@@ -481,6 +483,57 @@ export const SYSTEM_PROMPT = `
 ...
 `.trim();
 ```
+
+## 평가 (Evaluation)
+
+### 평가 실행
+
+에이전트 품질을 측정하는 평가 프레임워크입니다.
+
+```bash
+# Fixture 모드로 전체 평가 (API 호출 없음)
+bun run eval
+
+# 실시간 API로 평가
+bun run eval:live
+
+# 랜덤 10개 샘플만 실행
+bun run eval --sample 10
+
+# 특정 카테고리만 평가
+bun run eval --category quantitative_retrieval
+bun run eval --category edge_cases
+
+# 새 fixture 녹화 (실제 API 호출)
+bun run eval:record --corp-codes 00126380,00164779
+```
+
+### 데이터셋 카테고리
+
+| 카테고리 | 수량 | 채점 방식 | 예시 |
+|----------|------|----------|------|
+| `quantitative_retrieval` | 12 | 수치 비교 | "삼성전자 2024년 매출액은?" |
+| `qualitative_retrieval` | 6 | LLM 판정 | "SK하이닉스 최대주주는?" |
+| `comparison` | 6 | LLM 판정 | "현대차와 기아 영업이익률 비교" |
+| `trends` | 5 | LLM 판정 | "네이버 매출 3개년 추이" |
+| `price_volume` | 6 | 수치 비교 | "카카오 현재 주가는?" |
+| `valuation` | 5 | 수치 비교 | "삼성전자 현재 PER은?" |
+| `edge_cases` | 10 | LLM 판정 | "삼성 매출은?" (모호한 입력) |
+
+### 채점 체계
+
+**수치 채점기** (`scoring_method: numerical`):
+- 한국어 금액 역파싱: "67.4조원" → 67,400,000,000,000원
+- 허용 오차 내 → 1.0, 약간 초과 → 0.5, 크게 초과 → 0.25
+
+**LLM-as-Judge** (`scoring_method: llm_judge`):
+- 1.0 = 완전 정확
+- 0.75 = 대체로 정확 (핵심 수치 맞음, 세부 누락)
+- 0.5 = 부분 정확 (방향 맞음, 큰 수치 오류)
+- 0.25 = 주제만 관련 (수치 오류)
+- 0.0 = 오답 또는 환각
+
+평가 결과는 [LangSmith](https://smith.langchain.com)에 자동 로깅됩니다.
 
 ## 다음 단계
 

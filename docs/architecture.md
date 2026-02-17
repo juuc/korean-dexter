@@ -500,7 +500,12 @@ korean-dexter/
 │   ├── components/         # React Ink UI 컴포넌트
 │   ├── hooks/              # React hooks
 │   ├── skills/             # 확장 가능한 스킬 시스템
-│   ├── evals/              # 평가 프레임워크 (Phase 3)
+│   ├── evals/              # 평가 프레임워크
+│   │   ├── dataset/           # 50개 Q&A 데이터셋
+│   │   ├── fixtures/          # 결정론적 리플레이 시스템
+│   │   ├── scorers/           # 수치/LLM 채점기
+│   │   ├── components/        # 평가 터미널 UI
+│   │   └── run.ts             # 평가 러너
 │   ├── utils/              # config, logger, hangul, tokens
 │   ├── cli.tsx             # CLI 진입점
 │   └── index.tsx           # 앱 루트
@@ -653,3 +658,56 @@ bun test src/agent          # 에이전트 로직만
 - [KIS API 문서](https://apiportal.koreainvestment.com/)
 - [LangChain 공식 문서](https://js.langchain.com/)
 - [React Ink 문서](https://github.com/vadimdemedes/ink)
+
+---
+
+## 평가 프레임워크 (Evaluation Framework)
+
+### 개요
+
+Korean Dexter는 에이전트 품질을 측정하기 위한 이중 채점 평가 시스템을 포함합니다.
+
+```
+User Question → Agent (with fixtures or live APIs) → Answer
+                                                      ↓
+                                            ┌─────────────────┐
+                                            │  Scoring Router  │
+                                            └────────┬────────┘
+                                                     │
+                                    ┌────────────────┼────────────────┐
+                                    ▼                                 ▼
+                          Numerical Scorer                    LLM-as-Judge
+                     (조원/억원/만원 파싱,                  (5점 척도 루브릭,
+                      허용 오차 비교)                       환각 감지)
+                                    │                                 │
+                                    └────────────────┬────────────────┘
+                                                     ▼
+                                              LangSmith 로깅
+```
+
+### 주요 컴포넌트
+
+| 컴포넌트 | 파일 | 설명 |
+|----------|------|------|
+| **데이터셋** | `evals/dataset/finance_agent.csv` | 50개 검증 질문 (7 카테고리, 10+ 기업) |
+| **Fixture 시스템** | `evals/fixtures/` | API 응답 녹화/재생으로 결정론적 평가 |
+| **수치 채점기** | `evals/scorers/numerical.ts` | 한국어 금액 역파싱 + 허용 오차 비교 |
+| **LLM 채점기** | `evals/run.ts` | 5점 척도 (0/0.25/0.5/0.75/1.0) + 환각 감지 |
+| **터미널 UI** | `evals/components/` | 실시간 진행률, 3단계 결과 표시 (✓/△/✗) |
+
+### 채점 라우팅
+
+CSV의 `scoring_method` 컬럼에 따라 자동 라우팅:
+
+- `numerical` → 수치 채점기 (조원/억원/만원/배/% 파싱, 허용 오차 비교)
+- `llm_judge` → LLM-as-Judge (GPT-5.2, 5점 루브릭)
+
+### CLI 명령어
+
+```bash
+bun run eval                                    # Fixture 모드 (기본)
+bun run eval:live                               # 실시간 API 모드
+bun run eval --sample 10                        # 랜덤 10개 샘플
+bun run eval --category quantitative_retrieval  # 카테고리 필터링
+bun run eval:record                             # 새 fixture 녹화
+```

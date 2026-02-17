@@ -2,8 +2,11 @@
  * LangSmith Evaluation Runner for Dexter
  *
  * Usage:
- *   bun run src/evals/run.ts              # Run on all questions
- *   bun run src/evals/run.ts --sample 10  # Run on random sample of 10 questions
+ *   bun run eval                                      # Run with fixtures (default)
+ *   bun run eval:live                                 # Run with live API calls
+ *   bun run src/evals/run.ts --sample 10              # Run on random sample of 10 questions
+ *   bun run src/evals/run.ts --category quantitative_retrieval  # Run specific category
+ *   bun run src/evals/run.ts --live --sample 5        # Combine flags
  */
 
 import 'dotenv/config';
@@ -18,14 +21,18 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Agent } from '../agent/agent.js';
 import { EvalApp, type EvalProgressEvent } from './components/index.js';
+import { NumericalScorer } from './scorers/numerical.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Types
 interface Example {
-  inputs: { question: string };
-  outputs: { answer: string };
+  readonly inputs: { readonly question: string };
+  readonly outputs: { readonly answer: string };
+  readonly type: string;
+  readonly scoringMethod: string;
+  readonly tolerance: number | undefined;
 }
 
 // ============================================================================
@@ -45,7 +52,10 @@ function parseCSV(csvContent: string): Example[] {
       if (row.length >= 2 && row[0].trim()) {
         examples.push({
           inputs: { question: row[0] },
-          outputs: { answer: row[1] }
+          outputs: { answer: row[1] },
+          type: row[2]?.trim() || '',
+          scoringMethod: row[3]?.trim() || 'llm_judge',
+          tolerance: row[4]?.trim() ? parseFloat(row[4]) : undefined,
         });
       }
       i = nextIndex;
@@ -159,8 +169,9 @@ async function target(inputs: { question: string }): Promise<{ answer: string }>
 // ============================================================================
 
 const EvaluatorOutputSchema = z.object({
-  score: z.number().min(0).max(1),
+  score: z.enum(['1.0', '0.75', '0.5', '0.25', '0.0']).transform(Number),
   comment: z.string(),
+  hallucination: z.boolean(),
 });
 
 const llm = new ChatOpenAI({
@@ -181,9 +192,19 @@ async function correctnessEvaluator({
   const actualAnswer = (outputs?.answer as string) || '';
   const expectedAnswer = (referenceOutputs?.answer as string) || '';
 
-  const prompt = `You are evaluating the correctness of an AI assistant's answer to a financial question.
+  const prompt = `You are evaluating the correctness of an AI financial research assistant's answer about Korean market data.
 
-Compare the actual answer to the expected answer. The actual answer is considered correct if it conveys the same key information as the expected answer. Minor differences in wording, formatting, or additional context are acceptable as long as the core facts are correct.
+Compare the actual answer to the expected answer using this rubric:
+
+Scoring rubric:
+- 1.0 = Fully correct. All key financial figures and facts match the expected answer.
+- 0.75 = Mostly correct. The key figure is correct but minor details are wrong or missing (e.g., slightly different wording, missing context).
+- 0.5 = Partially correct. Right direction but significant numerical error (>5% off) or missing important details.
+- 0.25 = Marginally relevant. Right topic but wrong figures or outdated data.
+- 0.0 = Incorrect. Wrong answer, hallucinated data, or completely irrelevant response.
+
+Hallucination detection:
+- Set hallucination to true if the answer contains specific numbers or facts that appear fabricated (not matching the expected answer and not a reasonable rounding/formatting difference).
 
 Expected Answer:
 ${expectedAnswer}
@@ -192,15 +213,19 @@ Actual Answer:
 ${actualAnswer}
 
 Evaluate and provide:
-- score: 1 if the answer is correct (contains the key information), 0 if incorrect
-- comment: brief explanation of why the answer is correct or incorrect`;
+- score: one of "1.0", "0.75", "0.5", "0.25", "0.0"
+- comment: brief explanation of why this score was given
+- hallucination: true if fabricated data detected, false otherwise`;
 
   try {
     const result = await structuredLlm.invoke(prompt);
+    const comment = result.hallucination
+      ? `[HALLUCINATION] ${result.comment}`
+      : result.comment;
     return {
       key: 'correctness',
       score: result.score,
-      comment: result.comment,
+      comment,
     };
   } catch (error) {
     return {
@@ -215,7 +240,15 @@ Evaluate and provide:
 // Evaluation generator - yields progress events for the UI
 // ============================================================================
 
-function createEvaluationRunner(sampleSize?: number) {
+interface EvalRunnerOptions {
+  sampleSize?: number;
+  category?: string;
+  useFixtures?: boolean;
+}
+
+function createEvaluationRunner(options: EvalRunnerOptions = {}) {
+  const { sampleSize, category, useFixtures = true } = options;
+
   return async function* runEvaluation(): AsyncGenerator<EvalProgressEvent, void, unknown> {
     // Load and parse dataset
     const csvPath = path.join(__dirname, 'dataset', 'finance_agent.csv');
@@ -223,9 +256,23 @@ function createEvaluationRunner(sampleSize?: number) {
     let examples = parseCSV(csvContent);
     const totalCount = examples.length;
 
+    // Apply category filter
+    if (category) {
+      examples = examples.filter(e => e.type === category);
+      if (examples.length === 0) {
+        throw new Error(`No examples found for category: ${category}`);
+      }
+    }
+
     // Apply sampling if requested
     if (sampleSize && sampleSize < examples.length) {
       examples = shuffleArray(examples).slice(0, sampleSize);
+    }
+
+    // Log fixtures mode
+    if (useFixtures) {
+      // TODO: Wire fixtures into Agent.create() to replace real API clients
+      // For now, fixtures mode just signals the intent
     }
 
     // Create LangSmith client
@@ -273,6 +320,9 @@ function createEvaluationRunner(sampleSize?: number) {
     // Generate experiment name for tracking
     const experimentName = `dexter-eval-${Date.now().toString(36)}`;
 
+    // Initialize scorers
+    const numericalScorer = new NumericalScorer();
+
     // Run evaluation manually - process each example one by one
     for (const example of examples) {
       const question = example.inputs.question;
@@ -288,12 +338,29 @@ function createEvaluationRunner(sampleSize?: number) {
       const outputs = await target(example.inputs);
       const endTime = Date.now();
 
-      // Run the correctness evaluator
-      const evalResult = await correctnessEvaluator({
-        inputs: example.inputs,
-        outputs,
-        referenceOutputs: example.outputs,
-      });
+      // Run the appropriate scorer based on scoring method
+      let evalResult: EvaluationResult;
+
+      if (example.scoringMethod === 'numerical') {
+        // Use numerical scorer
+        const scorerResult = numericalScorer.score(
+          example.outputs.answer,
+          outputs.answer,
+          example.tolerance
+        );
+        evalResult = {
+          key: 'correctness',
+          score: scorerResult.score,
+          comment: scorerResult.comment,
+        };
+      } else {
+        // Use LLM-as-judge
+        evalResult = await correctnessEvaluator({
+          inputs: example.inputs,
+          outputs,
+          referenceOutputs: example.outputs,
+        });
+      }
 
       // Log to LangSmith for tracking
       await client.createRun({
@@ -310,6 +377,7 @@ function createEvaluationRunner(sampleSize?: number) {
           evaluation: {
             score: evalResult.score,
             comment: evalResult.comment,
+            hallucination: evalResult.comment?.startsWith('[HALLUCINATION]') ?? false,
           },
         },
       });
@@ -320,6 +388,7 @@ function createEvaluationRunner(sampleSize?: number) {
         question,
         score: typeof evalResult.score === 'number' ? evalResult.score : 0,
         comment: evalResult.comment || '',
+        scoringMethod: example.scoringMethod,
       };
     }
 
@@ -341,8 +410,15 @@ async function main() {
   const sampleIndex = args.indexOf('--sample');
   const sampleSize = sampleIndex !== -1 ? parseInt(args[sampleIndex + 1]) : undefined;
 
-  // Create the evaluation runner with the sample size
-  const runEvaluation = createEvaluationRunner(sampleSize);
+  // Parse --category flag
+  const categoryIndex = args.indexOf('--category');
+  const category = categoryIndex !== -1 ? args[categoryIndex + 1] : undefined;
+
+  // Parse --fixtures flag (default behavior)
+  const useFixtures = !args.includes('--live');
+
+  // Create the evaluation runner with options
+  const runEvaluation = createEvaluationRunner({ sampleSize, category, useFixtures });
 
   // Render the Ink UI
   const { waitUntilExit } = render(

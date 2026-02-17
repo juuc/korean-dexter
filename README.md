@@ -225,7 +225,12 @@ src/
 │   └── types.ts           — 공통 타입 정의
 ├── model/              — LLM 제공자 추상화 (Anthropic/OpenAI/Gemini)
 ├── skills/             — 확장 가능한 스킬 시스템
-├── evals/              — 평가 프레임워크 (Phase 3)
+├── evals/              — 평가 프레임워크
+│   ├── dataset/          — 50개 Q&A 데이터셋
+│   ├── fixtures/         — 결정론적 테스트 리플레이 시스템
+│   ├── scorers/          — 수치 검증 + LLM 채점기
+│   ├── components/       — 평가 터미널 UI
+│   └── run.ts            — 평가 러너 (LangSmith 연동)
 ├── utils/              — 유틸리티 (config, logger, hangul, tokens)
 ├── hooks/              — React hooks (useAgentRunner, useModelSelection)
 ├── cli.tsx             — CLI 진입점
@@ -272,8 +277,11 @@ src/
 - [x] Error handling ([#14](https://github.com/juuc/korean-dexter/issues/14))
 - [x] CFS/OFS handling ([#15](https://github.com/juuc/korean-dexter/issues/15))
 
-### 🔄 Phase 3: Evaluation & Observability (진행 중)
-- [ ] Korean Q&A dataset ([#12](https://github.com/juuc/korean-dexter/issues/12))
+### ✅ Phase 3: Evaluation & Observability (완료)
+- [x] Korean Q&A dataset — 50개 검증 질문 ([#12](https://github.com/juuc/korean-dexter/issues/12))
+- [x] Fixture replay system — 결정론적 평가 (API 호출 없음)
+- [x] Dual scoring — 수치 검증 (조원/억원/만원) + LLM-as-judge (5점 척도)
+- [x] CLI integration — `bun run eval`, `--category`, `--sample` 지원
 
 ### 📋 Phase 4: Extended Data (계획)
 - [ ] Demo mode ([#19](https://github.com/juuc/korean-dexter/issues/19))

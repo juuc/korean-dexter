@@ -1,0 +1,35 @@
+{
+  "corpCode": "00000001",
+  "corpName": "Test Company",
+  "recordedAt": "2024-01-01T00:00:00.000Z",
+  "responses": [
+    {
+      "endpoint": "company",
+      "params": {
+        "corp_code": "00000001"
+      },
+      "response": {
+        "corp_name": "Test Company",
+        "corp_code": "00000001"
+      }
+    },
+    {
+      "endpoint": "fnlttSinglAcnt",
+      "params": {
+        "corp_code": "00000001",
+        "bsns_year": "2024",
+        "reprt_code": "11011"
+      },
+      "response": {
+        "status": "000",
+        "message": "Success",
+        "list": [
+          {
+            "account_nm": "자산총계",
+            "thstrm_amount": "1000000000000"
+          }
+        ]
+      }
+    }
+  ]
+}

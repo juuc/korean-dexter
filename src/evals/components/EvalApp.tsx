@@ -30,6 +30,7 @@ export interface EvalProgressEvent {
   comment?: string;
   experimentName?: string;
   averageScore?: number;
+  scoringMethod?: string;
 }
 
 interface EvalAppProps {
@@ -82,7 +83,7 @@ export function EvalApp({ runEvaluation }: EvalAppProps) {
             setState(prev => ({
               ...prev,
               completed: prev.completed + 1,
-              correct: prev.correct + (event.score === 1 ? 1 : 0),
+              correct: prev.correct + ((event.score ?? 0) >= 0.75 ? 1 : 0),
               currentQuestion: null,
               results: [
                 ...prev.results,
@@ -147,8 +148,8 @@ export function EvalApp({ runEvaluation }: EvalAppProps) {
         <Text>Results by question:</Text>
         <Text>{'─'.repeat(70)}</Text>
         {state.results.map((r, i) => {
-          const icon = r.score === 1 ? '✓' : '✗';
-          const iconColor = r.score === 1 ? colors.success : colors.error;
+          const icon = r.score >= 0.75 ? '✓' : r.score >= 0.5 ? '△' : '✗';
+          const iconColor = r.score >= 0.75 ? colors.success : r.score >= 0.5 ? colors.warning : colors.error;
           return (
             <Box key={i} flexDirection="column">
               <Box>
@@ -156,7 +157,7 @@ export function EvalApp({ runEvaluation }: EvalAppProps) {
                 <Text color={colors.muted}>[{r.score}] </Text>
                 <Text>{r.question.slice(0, 65)}{r.question.length > 65 ? '...' : ''}</Text>
               </Box>
-              {r.comment && r.score !== 1 && (
+              {r.comment && r.score < 1 && (
                 <Text color={colors.muted}>    {r.comment.slice(0, 80)}{r.comment.length > 80 ? '...' : ''}</Text>
               )}
             </Box>

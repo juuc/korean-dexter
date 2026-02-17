@@ -13,7 +13,10 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "test:watch": "bun test --watch",
-    "docs:check": "markdown-link-check README.md CONTRIBUTING.md docs/*.md --config .markdown-link-check.json"
+    "docs:check": "markdown-link-check README.md CONTRIBUTING.md docs/*.md --config .markdown-link-check.json",
+    "eval": "bun run src/evals/run.ts --fixtures",
+    "eval:live": "bun run src/evals/run.ts",
+    "eval:record": "bun run scripts/record-fixtures.ts"
   },
   "dependencies": {
     "@langchain/anthropic": "^1.1.3",

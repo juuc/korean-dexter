@@ -99,7 +99,12 @@ src/
 │   ├── registry.ts
 │   └── types.ts
 │
-├── evals/              # 평가 프레임워크 (Phase 3)
+├── evals/              # 평가 프레임워크
+│   ├── dataset/        # 50개 Q&A 데이터셋 (finance_agent.csv)
+│   ├── fixtures/       # 결정론적 리플레이 (mock clients, loader)
+│   ├── scorers/        # 수치 검증 + LLM-as-judge 채점기
+│   ├── components/     # 평가 터미널 UI (Ink)
+│   └── run.ts          # 평가 러너 엔트리포인트
 │
 ├── utils/              # 유틸리티
 │   ├── config.ts       # 설정 관리
@@ -116,7 +121,8 @@ src/
 └── theme.ts            # 터미널 색상 테마
 
 scripts/
-└── test-query.ts       # 헤드리스 테스트 스크립트
+├── test-query.ts       # 헤드리스 테스트 스크립트
+└── record-fixtures.ts  # 평가 Fixture 녹화 스크립트
 
 docs/
 ├── setup-guide.md      # API 키 발급 가이드
