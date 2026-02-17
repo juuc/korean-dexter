@@ -26,6 +26,7 @@ import {
   checkKisCredentials,
 } from '@/utils/env.js';
 import { formatAmount } from '@/shared/formatter.js';
+import { formatKoreanError } from '@/tools/error-messages.js';
 import type { RegisteredTool } from './registry.js';
 import {
   RESOLVE_COMPANY_DESCRIPTION,
@@ -36,6 +37,7 @@ import {
   GET_MARKET_INDEX_DESCRIPTION,
 } from './descriptions/korean-tools.js';
 
+import { logger } from '@/utils/logger.js';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 
@@ -69,7 +71,17 @@ async function getResolver(): Promise<CorpCodeResolver> {
   if (!_resolverInitialized) {
     _resolverInitialized = true;
     const cachePath = join(homedir(), '.korean-dexter', 'corp-codes.json');
-    await _resolver.loadFromCache(cachePath);
+    const cached = await _resolver.loadFromCache(cachePath);
+
+    if (!cached) {
+      const apiKey = process.env.OPENDART_API_KEY;
+      if (apiKey) {
+        logger.info('Corp code cache not found. Auto-downloading from OpenDART...');
+        await _resolver.loadFromApi(apiKey);
+        await _resolver.saveToCache(cachePath);
+        logger.info(`Corp codes saved to ${cachePath} (${_resolver.count} entries)`);
+      }
+    }
   }
   return _resolver;
 }
@@ -158,11 +170,8 @@ function createGetFinancialStatementsTool(): RegisteredTool {
       );
 
       if (!result.success || !result.data) {
-        return JSON.stringify({
-          error: true,
-          code: result.error?.code ?? 'API_ERROR',
-          message: result.error?.message ?? 'Failed to fetch financial statements',
-        });
+        const err = formatKoreanError(result.error?.code ?? 'API_ERROR', 'get_financial_statements', result.error?.message);
+        return JSON.stringify({ error: true, ...err });
       }
 
       const data = result.data;
@@ -173,14 +182,24 @@ function createGetFinancialStatementsTool(): RegisteredTool {
         previousPeriod: item.previousAmount.displayValue,
       }));
 
-      return JSON.stringify({
+      // CFS/OFS fallback warning: if user didn't request OFS explicitly but got OFS data
+      const usedFallback = data.fsDiv === 'OFS' && fsDiv === undefined;
+
+      const response: Record<string, unknown> = {
         corpCode: data.corpCode,
         corpName: data.corpName,
         period: data.period.label,
         periodEn: data.period.labelEn,
         fsDiv: data.fsDiv === 'CFS' ? '연결' : '별도',
         items: formattedItems,
-      });
+      };
+
+      if (usedFallback) {
+        response.warning = '연결재무제표를 찾을 수 없어 별도재무제표를 사용했습니다.';
+        response.usedFallback = true;
+      }
+
+      return JSON.stringify(response);
     },
     {
       name: 'get_financial_statements',
@@ -227,11 +246,8 @@ function createGetCompanyInfoTool(): RegisteredTool {
       const result = await getCompanyInfo(client, input.corp_code);
 
       if (!result.success || !result.data) {
-        return JSON.stringify({
-          error: true,
-          code: result.error?.code ?? 'API_ERROR',
-          message: result.error?.message ?? 'Failed to fetch company info',
-        });
+        const err = formatKoreanError(result.error?.code ?? 'API_ERROR', 'get_company_info', result.error?.message);
+        return JSON.stringify({ error: true, ...err });
       }
 
       const data = result.data;
@@ -280,11 +296,8 @@ function createGetStockPriceTool(): RegisteredTool {
       const result = await getStockPrice(client, input.stock_code);
 
       if (!result.success || !result.data) {
-        return JSON.stringify({
-          error: true,
-          code: result.error?.code ?? 'API_ERROR',
-          message: result.error?.message ?? 'Failed to fetch stock price',
-        });
+        const err = formatKoreanError(result.error?.code ?? 'API_ERROR', 'get_stock_price', result.error?.message);
+        return JSON.stringify({ error: true, ...err });
       }
 
       const data = result.data;
@@ -340,12 +353,8 @@ function createGetHistoricalPricesTool(): RegisteredTool {
       });
 
       if (!result.success || !result.data) {
-        return JSON.stringify({
-          error: true,
-          code: result.error?.code ?? 'API_ERROR',
-          message:
-            result.error?.message ?? 'Failed to fetch historical prices',
-        });
+        const err = formatKoreanError(result.error?.code ?? 'API_ERROR', 'get_historical_prices', result.error?.message);
+        return JSON.stringify({ error: true, ...err });
       }
 
       const data = result.data;
@@ -401,11 +410,8 @@ function createGetMarketIndexTool(): RegisteredTool {
       const result = await getMarketIndex(client, indexCode);
 
       if (!result.success || !result.data) {
-        return JSON.stringify({
-          error: true,
-          code: result.error?.code ?? 'API_ERROR',
-          message: result.error?.message ?? 'Failed to fetch market index',
-        });
+        const err = formatKoreanError(result.error?.code ?? 'API_ERROR', 'get_market_index', result.error?.message);
+        return JSON.stringify({ error: true, ...err });
       }
 
       const data = result.data;
