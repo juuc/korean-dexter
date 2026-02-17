@@ -22,6 +22,7 @@ import { fileURLToPath } from 'url';
 import { Agent } from '../agent/agent.js';
 import { EvalApp, type EvalProgressEvent } from './components/index.js';
 import { NumericalScorer } from './scorers/numerical.js';
+import type { FixtureSet } from './fixtures/types.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -269,10 +270,22 @@ function createEvaluationRunner(options: EvalRunnerOptions = {}) {
       examples = shuffleArray(examples).slice(0, sampleSize);
     }
 
-    // Log fixtures mode
+    // Wire fixture clients to replace real API clients
     if (useFixtures) {
-      // TODO: Wire fixtures into Agent.create() to replace real API clients
-      // For now, fixtures mode just signals the intent
+      const { loadFixtureIndex, loadFixtureSet, createMockOpenDartClient, createMockKISClient } = await import('./fixtures/index.js');
+      const { setDartClient, setKisClient } = await import('../tools/langchain-tools.js');
+
+      const index = loadFixtureIndex();
+      const fixtureSets = new Map<string, FixtureSet>();
+      for (const company of index.companies) {
+        const set = loadFixtureSet(company.corpCode);
+        if (set) fixtureSets.set(company.corpCode, set);
+      }
+
+      if (fixtureSets.size > 0) {
+        setDartClient(createMockOpenDartClient(fixtureSets));
+        setKisClient(createMockKISClient(fixtureSets));
+      }
     }
 
     // Create LangSmith client
@@ -391,6 +404,10 @@ function createEvaluationRunner(options: EvalRunnerOptions = {}) {
         scoringMethod: example.scoringMethod,
       };
     }
+
+    // Clean up fixture clients
+    const { resetClients } = await import('../tools/langchain-tools.js');
+    resetClients();
 
     // Yield complete event
     yield {

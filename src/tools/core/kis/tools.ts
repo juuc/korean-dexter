@@ -1,7 +1,7 @@
 import { type ToolResult, type NormalizedAmount } from '@/shared/types';
 import { parseRawAmount, formatAmount, type FormatOptions } from '@/shared/formatter';
 import { CACHE_TTL } from '@/infra/cache';
-import { type KISClient } from './client';
+import type { KisClientLike } from './client';
 import { getPriceCacheTTL, isKRXMarketOpen } from './market-hours';
 
 // ---------------------------------------------------------------------------
@@ -96,7 +96,7 @@ interface KISIndexPriceOutput {
  * tr_id: FHKST01010100
  */
 export async function getStockPrice(
-  client: KISClient,
+  client: KisClientLike,
   stockCode: string
 ): Promise<ToolResult<StockPriceResult>> {
   const result = await client.request<KISInquirePriceOutput>(
@@ -161,7 +161,7 @@ export async function getStockPrice(
  * tr_id: FHKST01010400
  */
 export async function getHistoricalPrices(
-  client: KISClient,
+  client: KisClientLike,
   stockCode: string,
   options?: {
     readonly startDate?: string; // YYYYMMDD
@@ -235,7 +235,7 @@ export async function getHistoricalPrices(
  * Index codes: "0001" = KOSPI, "1001" = KOSDAQ
  */
 export async function getMarketIndex(
-  client: KISClient,
+  client: KisClientLike,
   indexCode: string
 ): Promise<ToolResult<MarketIndexResult>> {
   const result = await client.request<KISIndexPriceOutput>(

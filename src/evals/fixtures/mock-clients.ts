@@ -1,11 +1,13 @@
 import { createToolResult, createToolError, type ToolResult } from '@/shared/types.js';
 import type { FixtureSet } from './types.js';
 import { findFixtureResponse } from './loader.js';
+import type { DartClientLike } from '@/tools/core/opendart/client.js';
+import type { KisClientLike } from '@/tools/core/kis/client.js';
 
 /**
  * Mock OpenDartClient that returns fixture data instead of making real API calls.
  */
-export class MockOpenDartClient {
+export class MockOpenDartClient implements DartClientLike {
   constructor(private readonly fixtureSets: Map<string, FixtureSet>) {}
 
   async request<T>(
@@ -68,7 +70,7 @@ export class MockOpenDartClient {
 /**
  * Mock KISClient that returns fixture data instead of making real API calls.
  */
-export class MockKISClient {
+export class MockKISClient implements KisClientLike {
   constructor(private readonly fixtureSets: Map<string, FixtureSet>) {}
 
   async request<T>(
@@ -136,7 +138,7 @@ export class MockKISClient {
  */
 export function createMockOpenDartClient(
   fixtureSets: Map<string, FixtureSet>
-): MockOpenDartClient {
+): DartClientLike {
   return new MockOpenDartClient(fixtureSets);
 }
 
@@ -145,6 +147,6 @@ export function createMockOpenDartClient(
  */
 export function createMockKISClient(
   fixtureSets: Map<string, FixtureSet>
-): MockKISClient {
+): KisClientLike {
   return new MockKISClient(fixtureSets);
 }

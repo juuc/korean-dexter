@@ -9,12 +9,12 @@
 import { tool } from '@langchain/core/tools';
 import { z } from 'zod';
 
-import { OpenDartClient } from '@/tools/core/opendart/client.js';
+import { OpenDartClient, type DartClientLike } from '@/tools/core/opendart/client.js';
 import {
   getFinancialStatements,
   getCompanyInfo,
 } from '@/tools/core/opendart/tools.js';
-import { KISClient } from '@/tools/core/kis/client.js';
+import { KISClient, type KisClientLike } from '@/tools/core/kis/client.js';
 import {
   getStockPrice,
   getHistoricalPrices,
@@ -44,20 +44,44 @@ import { join } from 'node:path';
 // Lazy singleton clients
 // ---------------------------------------------------------------------------
 
-let _dartClient: OpenDartClient | null = null;
-function getDartClient(): OpenDartClient {
+let _dartClient: DartClientLike | null = null;
+function getDartClient(): DartClientLike {
   if (!_dartClient) {
     _dartClient = new OpenDartClient();
   }
   return _dartClient;
 }
 
-let _kisClient: KISClient | null = null;
-function getKisClient(): KISClient {
+let _kisClient: KisClientLike | null = null;
+function getKisClient(): KisClientLike {
   if (!_kisClient) {
     _kisClient = new KISClient();
   }
   return _kisClient;
+}
+
+/**
+ * Override the DART client (used for testing with fixtures).
+ */
+export function setDartClient(client: DartClientLike): void {
+  _dartClient = client;
+}
+
+/**
+ * Override the KIS client (used for testing with fixtures).
+ */
+export function setKisClient(client: KisClientLike): void {
+  _kisClient = client;
+}
+
+/**
+ * Reset clients to null (cleanup after fixture mode).
+ */
+export function resetClients(): void {
+  _dartClient = null;
+  _kisClient = null;
+  _resolver = null;
+  _resolverInitialized = false;
 }
 
 let _resolver: CorpCodeResolver | null = null;

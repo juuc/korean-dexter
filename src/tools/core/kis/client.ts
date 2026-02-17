@@ -37,6 +37,18 @@ interface CacheOptions {
   readonly cacheKey?: string;
 }
 
+export interface KisClientLike {
+  request<T>(
+    method: 'GET' | 'POST',
+    path: string,
+    params: Record<string, string>,
+    options?: {
+      readonly trId: string;
+      readonly cacheOptions?: { readonly ttlMs: number | null; readonly cacheKey?: string };
+    }
+  ): Promise<ToolResult<T>>;
+}
+
 /**
  * Base HTTP client for KIS API.
  *

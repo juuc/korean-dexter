@@ -79,6 +79,14 @@ export interface OpenDartClientOptions {
   readonly cacheDbPath?: string;
 }
 
+export interface DartClientLike {
+  request<T>(
+    endpoint: string,
+    params: Record<string, string>,
+    cacheOptions?: { readonly ttlMs: number | null; readonly cacheKey?: string }
+  ): Promise<ToolResult<T>>;
+}
+
 /**
  * OpenDART API client with built-in rate limiting, two-tier caching, and error handling.
  *

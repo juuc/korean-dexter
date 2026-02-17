@@ -7,7 +7,7 @@ import type { NormalizedAmount, PeriodRange, ToolResult } from '@/shared/types.j
 import { dartReprtCodeToPeriod, createToolResult, createToolError } from '@/shared/types.js';
 import { parseRawAmount, formatAmount } from '@/shared/formatter.js';
 import { normalizeAccountName, type AccountCategory } from './account-mapper.js';
-import type { OpenDartClient } from './client.js';
+import type { DartClientLike } from './client.js';
 
 // ---------------------------------------------------------------------------
 // Result types
@@ -169,7 +169,7 @@ function determineScale(value: number | null): NormalizedAmount['scale'] {
  * @param fsDiv Financial statement division; defaults to 'CFS', falls back to 'OFS'
  */
 export async function getFinancialStatements(
-  client: OpenDartClient,
+  client: DartClientLike,
   corpCode: string,
   year: string,
   reportCode: string,
@@ -286,7 +286,7 @@ function parseFinancialResponse(
  * @param corpCode 8-digit DART corp code
  */
 export async function getCompanyInfo(
-  client: OpenDartClient,
+  client: DartClientLike,
   corpCode: string
 ): Promise<ToolResult<CompanyInfoResult>> {
   const result = await client.request<DartCompanyResponse>(
@@ -348,7 +348,7 @@ export interface DisclosureSearchOptions {
  * @param options Search filters (date range, type, pagination)
  */
 export async function getDisclosures(
-  client: OpenDartClient,
+  client: DartClientLike,
   corpCode: string,
   options?: DisclosureSearchOptions
 ): Promise<ToolResult<DisclosureSearchResult>> {
