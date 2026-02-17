@@ -3,7 +3,7 @@ title: "Recalibrate Scratchpad Token Budget for Korean Data"
 issue: 13
 phase: 2-core
 priority: high
-status: planned
+status: done
 type: infra
 created: 2026-02-16
 depends_on:

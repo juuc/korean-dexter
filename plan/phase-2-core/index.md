@@ -71,9 +71,9 @@ Critical challenge: Korean financial data is structurally different from US mark
 - [x] KIS client can get real-time Samsung stock price
 - [x] AccountMapper normalizes "매출액" → "revenue" reliably
 - [x] Agent responds in Korean with proper 조원/억원/만원 formatting
-- [ ] Token budget handles typical Korean financial query without context overflow
-- [ ] Error messages are clear and actionable in Korean
-- [ ] Consolidated statements preferred, separate as fallback, never mixed
+- [x] Token budget handles typical Korean financial query without context overflow
+- [x] Error messages are clear and actionable in Korean
+- [x] Consolidated statements preferred, separate as fallback, never mixed
 
 ## Risks
 

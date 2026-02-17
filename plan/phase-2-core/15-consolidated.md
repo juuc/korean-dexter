@@ -3,7 +3,7 @@ title: "Handle Consolidated vs Separate Financial Statements"
 issue: 15
 phase: 2-core
 priority: high
-status: planned
+status: done
 type: feature
 created: 2026-02-16
 depends_on:
