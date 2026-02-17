@@ -4,6 +4,51 @@
       "corpCode": "00000001",
       "corpName": "Test Company",
       "fixturePath": "00000001.json"
+    },
+    {
+      "corpCode": "00126380",
+      "corpName": "삼성전자(주)",
+      "fixturePath": "00126380.json"
+    },
+    {
+      "corpCode": "00164742",
+      "corpName": "현대자동차(주)",
+      "fixturePath": "00164742.json"
+    },
+    {
+      "corpCode": "00164779",
+      "corpName": "에스케이하이닉스(주)",
+      "fixturePath": "00164779.json"
+    },
+    {
+      "corpCode": "00258801",
+      "corpName": "(주)카카오",
+      "fixturePath": "00258801.json"
+    },
+    {
+      "corpCode": "00106641",
+      "corpName": "기아(주)",
+      "fixturePath": "00106641.json"
+    },
+    {
+      "corpCode": "01515323",
+      "corpName": "(주)엘지에너지솔루션",
+      "fixturePath": "01515323.json"
+    },
+    {
+      "corpCode": "00266961",
+      "corpName": "네이버(주)",
+      "fixturePath": "00266961.json"
+    },
+    {
+      "corpCode": "00688996",
+      "corpName": "(주)KB금융지주",
+      "fixturePath": "00688996.json"
+    },
+    {
+      "corpCode": "00126256",
+      "corpName": "삼성생명보험(주)",
+      "fixturePath": "00126256.json"
     }
   ]
 }

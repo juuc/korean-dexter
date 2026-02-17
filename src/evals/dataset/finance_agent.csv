@@ -5,29 +5,29 @@ SK하이닉스 2024년 매출액은?,66.19조원,quantitative_retrieval,numerica
 SK하이닉스 2024년 영업이익은?,23.46조원,quantitative_retrieval,numerical,0.01
 현대자동차 2024년 매출액은?,175.56조원,quantitative_retrieval,numerical,0.01
 현대자동차 2024년 영업이익은?,14.23조원,quantitative_retrieval,numerical,0.01
-LG에너지솔루션 2024년 매출액은?,33.75조원,quantitative_retrieval,numerical,0.01
-네이버 2024년 매출액은?,10.57조원,quantitative_retrieval,numerical,0.01
+LG에너지솔루션 2024년 매출액은?,25.6조원,quantitative_retrieval,numerical,0.01
+네이버 2024년 매출액은?,10.7조원,quantitative_retrieval,numerical,0.01
 카카오 2024년 매출액은?,7.87조원,quantitative_retrieval,numerical,0.01
-기아 2024년 영업이익은?,12.81조원,quantitative_retrieval,numerical,0.01
+기아 2024년 영업이익은?,12.7조원,quantitative_retrieval,numerical,0.01
 KB금융 2024년 당기순이익은?,5.07조원,quantitative_retrieval,numerical,0.01
-삼성생명 2024년 당기순이익은?,1.82조원,quantitative_retrieval,numerical,0.01
-SK하이닉스 최대주주는?,"SK스퀘어 (지분 약 20%)",qualitative_retrieval,llm_judge,
+삼성생명 2024년 당기순이익은?,2.3조원,quantitative_retrieval,numerical,0.01
+SK하이닉스 최대주주는?,SK스퀘어 (지분 약 20%),qualitative_retrieval,llm_judge,
 삼성전자 대표이사는?,"경계현, 전영현",qualitative_retrieval,llm_judge,
 현대차 본사 소재지는?,서울특별시 서초구,qualitative_retrieval,llm_judge,
 네이버 결산월은?,12월,qualitative_retrieval,llm_judge,
 카카오 상장시장은?,KOSPI,qualitative_retrieval,llm_judge,
 LG에너지솔루션 최대주주는?,LG화학,qualitative_retrieval,llm_judge,
-삼성전자와 SK하이닉스 중 2024년 매출액이 더 높은 기업은?,"삼성전자 (302.23조원 vs 66.19조원)",comparison,llm_judge,
-현대차와 기아 2024년 영업이익률 비교,"현대차 약 8.1%, 기아 약 11.3%, 기아가 더 높음",comparison,llm_judge,
-네이버와 카카오 중 2024년 매출이 더 큰 기업은?,"네이버 (10.57조원 vs 7.87조원)",comparison,llm_judge,
-KB금융과 삼성생명 중 2024년 순이익이 더 높은 기업은?,"KB금융 (5.07조원 vs 1.82조원)",comparison,llm_judge,
-삼성전자와 현대차 중 2024년 영업이익이 더 높은 기업은?,"삼성전자 (32.73조원 vs 14.23조원)",comparison,llm_judge,
-LG에너지솔루션과 SK하이닉스 중 2024년 매출이 더 높은 기업은?,"SK하이닉스 (66.19조원 vs 33.75조원)",comparison,llm_judge,
+삼성전자와 SK하이닉스 중 2024년 매출액이 더 높은 기업은?,삼성전자 (302.23조원 vs 66.19조원),comparison,llm_judge,
+현대차와 기아 2024년 영업이익률 비교,"현대차 약 8.1%, 기아 약 11.8%, 기아가 더 높음",comparison,llm_judge,
+네이버와 카카오 중 2024년 매출이 더 큰 기업은?,네이버 (10.7조원 vs 7.87조원),comparison,llm_judge,
+KB금융과 삼성생명 중 2024년 순이익이 더 높은 기업은?,KB금융 (5.07조원 vs 2.3조원),comparison,llm_judge,
+삼성전자와 현대차 중 2024년 영업이익이 더 높은 기업은?,삼성전자 (32.73조원 vs 14.23조원),comparison,llm_judge,
+LG에너지솔루션과 SK하이닉스 중 2024년 매출이 더 높은 기업은?,SK하이닉스 (66.19조원 vs 25.6조원),comparison,llm_judge,
 삼성전자 최근 3년간 매출 추이는?,"2022년 302.23조원, 2023년 258.94조원, 2024년 302.23조원 (V자 회복)",trends,llm_judge,
-SK하이닉스 최근 3년간 영업이익 추이는?,"2022년 6.96조원, 2023년 -7.73조원 적자, 2024년 23.46조원 흑자전환",trends,llm_judge,
+SK하이닉스 최근 3년간 영업이익 추이는?,"2022년 6.81조원, 2023년 -7.73조원 적자, 2024년 23.47조원 흑자전환",trends,llm_judge,
 현대차 매출 3개년 추이,"2022년 142.15조원, 2023년 162.66조원, 2024년 175.56조원 (지속 성장)",trends,llm_judge,
-네이버 최근 3년간 매출 추이는?,"2022년 8.22조원, 2023년 9.67조원, 2024년 10.57조원 (지속 성장)",trends,llm_judge,
-카카오 최근 3년간 매출 추이는?,"2022년 6.57조원, 2023년 7.12조원, 2024년 7.87조원 (완만한 성장)",trends,llm_judge,
+네이버 최근 3년간 매출 추이는?,"2022년 8.22조원, 2023년 9.67조원, 2024년 10.7조원 (지속 성장)",trends,llm_judge,
+카카오 최근 3년간 매출 추이는?,"2022년 6.8조원, 2023년 7.56조원, 2024년 7.87조원 (완만한 성장)",trends,llm_judge,
 삼성전자 현재 주가는?,55800원,price_volume,numerical,0.10
 SK하이닉스 현재 주가는?,211500원,price_volume,numerical,0.10
 현대차 현재 주가는?,207000원,price_volume,numerical,0.10
@@ -39,13 +39,13 @@ SK하이닉스 현재 PER은?,4.8배,valuation,numerical,0.05
 현대차 현재 PBR은?,0.52배,valuation,numerical,0.05
 네이버 현재 PER은?,22.5배,valuation,numerical,0.05
 삼성전자 현재 배당수익률은?,2.8%,valuation,numerical,0.05
-삼성 매출은?,"삼성전자로 해석하여 302.23조원 (모호한 입력 처리)",edge_cases,llm_judge,
+삼성 매출은?,삼성전자로 해석하여 302.23조원 (모호한 입력 처리),edge_cases,llm_judge,
 현대 영업이익은?,현대자동차로 해석하여 14.23조원,edge_cases,llm_judge,
 없는회사 실적은?,해당 기업을 찾을 수 없습니다 (에러 핸들링),edge_cases,llm_judge,
 asdfghjk 매출은?,해당 기업을 찾을 수 없습니다,edge_cases,llm_judge,
 삼성전자 2025년 매출은?,아직 공시되지 않은 데이터입니다 (미래 데이터),edge_cases,llm_judge,
 삼성전자 주가 얼마야?,55800원 (informal query),edge_cases,llm_judge,
-005930 매출은?,"삼성전자(005930) 매출 302.23조원 (ticker code lookup)",edge_cases,llm_judge,
+005930 매출은?,삼성전자(005930) 매출 302.23조원 (ticker code lookup),edge_cases,llm_judge,
 현대차 시가총액은?,약 44.3조원,edge_cases,llm_judge,
 삼성전자 직원수는?,약 12.4만명 (non-financial query),edge_cases,llm_judge,
 비상장기업인 쿠팡의 매출은?,한국 상장사가 아니므로 조회할 수 없습니다,edge_cases,llm_judge,
