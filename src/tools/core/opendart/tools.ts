@@ -257,7 +257,9 @@ function parseFinancialResponse(
   const asOfDate = period.endDate;
   const corpName = data.list[0].corp_name;
 
-  const items: FinancialStatementItem[] = data.list.map((item) => ({
+  // Filter by requested fs_div — DART API may return both CFS and OFS items
+  const filteredList = data.list.filter((item) => item.fs_div === fsDiv);
+  const items: FinancialStatementItem[] = filteredList.map((item) => ({
     accountName: item.account_nm,
     normalizedCategory: normalizeAccountName(item.account_nm),
     currentAmount: buildNormalizedAmount(item.thstrm_amount, 'opendart', asOfDate),
