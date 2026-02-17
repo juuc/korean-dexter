@@ -3,7 +3,7 @@ title: "Korean Financial System Prompt & Agent Prompt Engineering"
 issue: 7
 phase: 2-core
 priority: critical
-status: planned
+status: done
 type: feature
 created: 2026-02-16
 depends_on:

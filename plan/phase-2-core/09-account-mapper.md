@@ -3,7 +3,7 @@ title: "AccountMapper for K-IFRS Account Name Normalization"
 issue: 9
 phase: 2-core
 priority: critical
-status: planned
+status: done
 type: feature
 created: 2026-02-16
 depends_on:
