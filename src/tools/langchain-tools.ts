@@ -289,6 +289,31 @@ function createGetFinancialStatementsTool(): RegisteredTool {
         previousPeriod: item.previousAmount.displayValue,
       }));
 
+      // Compute derived financial ratios from raw values
+      const rawValues: Record<string, number | null> = {};
+      for (const item of data.items) {
+        if (item.normalizedCategory) {
+          rawValues[item.normalizedCategory] = item.currentAmount.value;
+        }
+      }
+
+      const derivedRatios: Record<string, string> = {};
+      const revenue = rawValues['revenue'];
+      const operatingIncome = rawValues['operating_income'];
+      const netIncome = rawValues['net_income'];
+      const totalLiabilities = rawValues['total_liabilities'];
+      const totalEquity = rawValues['total_equity'];
+
+      if (revenue && revenue !== 0 && operatingIncome != null) {
+        derivedRatios['영업이익률'] = `${((operatingIncome / revenue) * 100).toFixed(1)}%`;
+      }
+      if (revenue && revenue !== 0 && netIncome != null) {
+        derivedRatios['순이익률'] = `${((netIncome / revenue) * 100).toFixed(1)}%`;
+      }
+      if (totalEquity && totalEquity !== 0 && totalLiabilities != null) {
+        derivedRatios['부채비율'] = `${((totalLiabilities / totalEquity) * 100).toFixed(1)}%`;
+      }
+
       // CFS/OFS fallback warning: if user didn't request OFS explicitly but got OFS data
       const usedFallback = data.fsDiv === 'OFS' && fsDiv === undefined;
 
@@ -299,6 +324,7 @@ function createGetFinancialStatementsTool(): RegisteredTool {
         periodEn: data.period.labelEn,
         fsDiv: data.fsDiv === 'CFS' ? '연결' : '별도',
         items: formattedItems,
+        ...(Object.keys(derivedRatios).length > 0 && { derivedRatios }),
       };
 
       if (usedFallback) {
