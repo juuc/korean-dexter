@@ -225,7 +225,7 @@ Evaluate and provide:
       : result.comment;
     return {
       key: 'correctness',
-      score: result.score,
+      score: Number(result.score) || 0,
       comment,
     };
   } catch (error) {
@@ -415,7 +415,7 @@ function createEvaluationRunner(options: EvalRunnerOptions = {}) {
       yield {
         type: 'question_end',
         question,
-        score: typeof evalResult.score === 'number' ? evalResult.score : 0,
+        score: Number(evalResult.score) || 0,
         comment: evalResult.comment || '',
         scoringMethod: example.scoringMethod,
       };
