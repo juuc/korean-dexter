@@ -68,18 +68,28 @@ Korea Investment & Securities API.
 Input:
 - stock_code (required): 6-digit KRX stock code (e.g., "005930" for Samsung Electronics)
 
-Returns (all fields always available):
+Returns (primary — always shown):
 - currentPrice, change, changePercent: 현재가 및 전일 대비
 - todayOpen, todayHigh, todayLow: 당일 시가/고가/저가
-- w52High, w52HighDate: 52주 최고가 및 일자
-- w52Low, w52LowDate: 52주 최저가 및 일자
-- volume: 누적 거래량
+- w52High/Low + dates: 52주 최고/최저가 및 일자
+- volume, tradingValue: 누적 거래량, 거래대금
 - marketCap: 시가총액
-- per, pbr, eps: 투자 지표
-- foreignOwnershipRate: 외국인 지분율(%)
-- isMarketOpen: 장 개장 여부
+- per, pbr, eps, bps: 투자 지표
+- foreignOwnershipRate, foreignNetBuy, institutionalNetBuy: 외국인/기관 수급
+- industry, market: 업종, 소속시장
 
-This tool does NOT provide: 배당 정보, 일별 시세 히스토리 (→ get_historical_prices 사용), 재무제표 (→ get_financial_statements 사용)
+Returns (details — use when user asks specific questions):
+- listedShares, foreignHoldings: 상장주수, 외국인 보유수량
+- ytdHigh/Low + dates: 연중 최고/최저가
+- upperLimit, lowerLimit, basePrice: 상한가, 하한가, 기준가
+- faceValue: 액면가
+- volumeTurnoverRate, creditBalanceRate: 거래회전율, 신용잔고율
+- newHighLowFlag: 신고가/신저가 여부
+- investmentCaution, marketWarning, shortTermOverheat: 투자주의/경고/과열
+- viTriggered: VI 발동 여부
+- shortSellingAvailable: 공매도 가능 여부
+
+This tool does NOT provide: 배당 정보, 일별 시세 히스토리 (→ get_historical_prices), 재무제표 (→ get_financial_statements)
 
 Caveats:
 - Requires stock_code (6-digit ticker), NOT corp_code — get stock_code from resolve_company

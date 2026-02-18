@@ -15,6 +15,7 @@ export interface StockPriceResult {
   readonly change: NormalizedAmount;
   readonly changePercent: number;
   readonly volume: number;
+  readonly tradingValue: NormalizedAmount;
   readonly marketCap: NormalizedAmount;
   readonly high: NormalizedAmount;
   readonly low: NormalizedAmount;
@@ -26,8 +27,36 @@ export interface StockPriceResult {
   readonly per: number;
   readonly pbr: number;
   readonly eps: number;
+  readonly bps: number;
   readonly foreignOwnershipRate: number;
+  readonly foreignNetBuy: number;
+  readonly institutionalNetBuy: number;
   readonly isMarketOpen: boolean;
+  /** Less-frequently-used fields, available when users ask specific questions */
+  readonly details: StockPriceDetails;
+}
+
+export interface StockPriceDetails {
+  readonly industry: string;
+  readonly market: string;
+  readonly listedShares: number;
+  readonly foreignHoldings: number;
+  readonly faceValue: number;
+  readonly volumeTurnoverRate: number;
+  readonly creditBalanceRate: number;
+  readonly ytdHigh: NormalizedAmount;
+  readonly ytdHighDate: string;
+  readonly ytdLow: NormalizedAmount;
+  readonly ytdLowDate: string;
+  readonly upperLimit: NormalizedAmount;
+  readonly lowerLimit: NormalizedAmount;
+  readonly basePrice: NormalizedAmount;
+  readonly newHighLowFlag: string;
+  readonly investmentCaution: boolean;
+  readonly marketWarning: boolean;
+  readonly shortTermOverheat: boolean;
+  readonly viTriggered: boolean;
+  readonly shortSellingAvailable: boolean;
 }
 
 export interface DailyPrice {
@@ -65,20 +94,45 @@ interface KISInquirePriceOutput {
   readonly hts_kor_isnm?: string; // Stock name (Korean)
   readonly stck_prpr: string; // Current price
   readonly prdy_vrss: string; // Change from previous day
+  readonly prdy_vrss_sign: string; // Change sign (1=상한,2=상승,3=보합,4=하한,5=하락)
   readonly prdy_ctrt: string; // Change percent
   readonly acml_vol: string; // Accumulated volume
+  readonly acml_tr_pbmn: string; // Accumulated trading value (원)
   readonly hts_avls: string; // Market cap (억원)
   readonly stck_hgpr: string; // High (today)
   readonly stck_lwpr: string; // Low (today)
   readonly stck_oprc: string; // Open (today)
+  readonly stck_mxpr: string; // Upper limit price (상한가)
+  readonly stck_llam: string; // Lower limit price (하한가)
+  readonly stck_sdpr: string; // Base price (기준가)
   readonly w52_hgpr: string; // 52-week high
   readonly w52_hgpr_date: string; // 52-week high date (YYYYMMDD)
   readonly w52_lwpr: string; // 52-week low
   readonly w52_lwpr_date: string; // 52-week low date (YYYYMMDD)
-  readonly per: string; // PER (Price/Earnings Ratio)
-  readonly pbr: string; // PBR (Price/Book Ratio)
-  readonly eps: string; // EPS (Earnings Per Share)
+  readonly stck_dryy_hgpr: string; // YTD high (연중최고)
+  readonly dryy_hgpr_date: string; // YTD high date
+  readonly stck_dryy_lwpr: string; // YTD low (연중최저)
+  readonly dryy_lwpr_date: string; // YTD low date
+  readonly per: string; // PER
+  readonly pbr: string; // PBR
+  readonly eps: string; // EPS
+  readonly bps: string; // BPS (Book value Per Share)
   readonly hts_frgn_ehrt: string; // Foreign ownership rate (%)
+  readonly frgn_ntby_qty: string; // Foreign net buy quantity
+  readonly frgn_hldn_qty: string; // Foreign holding quantity
+  readonly pgtr_ntby_qty: string; // Institutional net buy quantity
+  readonly lstn_stcn: string; // Listed shares count
+  readonly bstp_kor_isnm: string; // Industry name (업종명)
+  readonly rprs_mrkt_kor_name: string; // Representative market (대표시장)
+  readonly vol_tnrt: string; // Volume turnover rate (거래회전율)
+  readonly whol_loan_rmnd_rate: string; // Credit balance rate (신용잔고율)
+  readonly stck_fcam: string; // Face value (액면가)
+  readonly new_hgpr_lwpr_cls_code: string; // New high/low flag (신고/신저 구분)
+  readonly invt_caful_yn: string; // Investment caution (투자주의)
+  readonly mrkt_warn_cls_code: string; // Market warning code (시장경고)
+  readonly short_over_yn: string; // Short-term overheating (단기과열)
+  readonly vi_cls_code: string; // VI triggered (VI발동)
+  readonly ssts_yn: string; // Short selling available (공매도가능)
 }
 
 /** Raw output item from /uapi/domestic-stock/v1/quotations/inquire-daily-price */
@@ -153,6 +207,7 @@ export async function getStockPrice(
     change: buildNormalizedAmount(output.prdy_vrss, today, { preferredScale: 'won', showSign: true }),
     changePercent: parseRawAmount(output.prdy_ctrt) ?? 0,
     volume: parseRawAmount(output.acml_vol) ?? 0,
+    tradingValue: buildNormalizedAmount(output.acml_tr_pbmn, today),
     marketCap: buildMarketCapAmount(output.hts_avls, today),
     high: buildNormalizedAmount(output.stck_hgpr, today, priceFormat),
     low: buildNormalizedAmount(output.stck_lwpr, today, priceFormat),
@@ -164,8 +219,33 @@ export async function getStockPrice(
     per: parseRawAmount(output.per) ?? 0,
     pbr: parseRawAmount(output.pbr) ?? 0,
     eps: parseRawAmount(output.eps) ?? 0,
+    bps: parseRawAmount(output.bps) ?? 0,
     foreignOwnershipRate: parseRawAmount(output.hts_frgn_ehrt) ?? 0,
+    foreignNetBuy: parseRawAmount(output.frgn_ntby_qty) ?? 0,
+    institutionalNetBuy: parseRawAmount(output.pgtr_ntby_qty) ?? 0,
     isMarketOpen: marketOpen,
+    details: {
+      industry: output.bstp_kor_isnm ?? '',
+      market: output.rprs_mrkt_kor_name ?? '',
+      listedShares: parseRawAmount(output.lstn_stcn) ?? 0,
+      foreignHoldings: parseRawAmount(output.frgn_hldn_qty) ?? 0,
+      faceValue: parseRawAmount(output.stck_fcam) ?? 0,
+      volumeTurnoverRate: parseRawAmount(output.vol_tnrt) ?? 0,
+      creditBalanceRate: parseRawAmount(output.whol_loan_rmnd_rate) ?? 0,
+      ytdHigh: buildNormalizedAmount(output.stck_dryy_hgpr, today, priceFormat),
+      ytdHighDate: formatKISDate(output.dryy_hgpr_date || ''),
+      ytdLow: buildNormalizedAmount(output.stck_dryy_lwpr, today, priceFormat),
+      ytdLowDate: formatKISDate(output.dryy_lwpr_date || ''),
+      upperLimit: buildNormalizedAmount(output.stck_mxpr, today, priceFormat),
+      lowerLimit: buildNormalizedAmount(output.stck_llam, today, priceFormat),
+      basePrice: buildNormalizedAmount(output.stck_sdpr, today, priceFormat),
+      newHighLowFlag: output.new_hgpr_lwpr_cls_code ?? '',
+      investmentCaution: output.invt_caful_yn === 'Y',
+      marketWarning: output.mrkt_warn_cls_code !== '00' && output.mrkt_warn_cls_code !== '',
+      shortTermOverheat: output.short_over_yn === 'Y',
+      viTriggered: output.vi_cls_code !== 'N' && output.vi_cls_code !== '',
+      shortSellingAvailable: output.ssts_yn === 'Y',
+    },
   };
 
   return {
