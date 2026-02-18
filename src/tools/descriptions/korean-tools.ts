@@ -60,7 +60,7 @@ When NOT to use:
 - Need financial numbers — use get_financial_statements
 - Need stock price — use get_stock_price`;
 
-export const GET_STOCK_PRICE_DESCRIPTION = `get_stock_price — KIS API 현재가 조회
+export const GET_STOCK_PRICE_DESCRIPTION = `get_stock_price — KIS API 현재가/시세 조회
 
 Retrieves real-time (during market hours) or closing stock price from
 Korea Investment & Securities API.
@@ -68,10 +68,18 @@ Korea Investment & Securities API.
 Input:
 - stock_code (required): 6-digit KRX stock code (e.g., "005930" for Samsung Electronics)
 
-Returns: current price, change, change%, volume, market cap, high, low, open, market status
+Returns (all fields always available):
+- currentPrice, change, changePercent: 현재가 및 전일 대비
+- todayOpen, todayHigh, todayLow: 당일 시가/고가/저가
+- w52High, w52HighDate: 52주 최고가 및 일자
+- w52Low, w52LowDate: 52주 최저가 및 일자
+- volume: 누적 거래량
+- marketCap: 시가총액
+- per, pbr, eps: 투자 지표
+- foreignOwnershipRate: 외국인 지분율(%)
+- isMarketOpen: 장 개장 여부
 
-Amounts are formatted in Korean won scales (조원/억원/만원).
-Market cap is in 억원 from KIS, converted to won for display.
+This tool does NOT provide: 배당 정보, 일별 시세 히스토리 (→ get_historical_prices 사용), 재무제표 (→ get_financial_statements 사용)
 
 Caveats:
 - Requires stock_code (6-digit ticker), NOT corp_code — get stock_code from resolve_company

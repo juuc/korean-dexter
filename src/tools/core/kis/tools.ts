@@ -19,6 +19,14 @@ export interface StockPriceResult {
   readonly high: NormalizedAmount;
   readonly low: NormalizedAmount;
   readonly open: NormalizedAmount;
+  readonly w52High: NormalizedAmount;
+  readonly w52HighDate: string;
+  readonly w52Low: NormalizedAmount;
+  readonly w52LowDate: string;
+  readonly per: number;
+  readonly pbr: number;
+  readonly eps: number;
+  readonly foreignOwnershipRate: number;
   readonly isMarketOpen: boolean;
 }
 
@@ -60,9 +68,17 @@ interface KISInquirePriceOutput {
   readonly prdy_ctrt: string; // Change percent
   readonly acml_vol: string; // Accumulated volume
   readonly hts_avls: string; // Market cap (억원)
-  readonly stck_hgpr: string; // High
-  readonly stck_lwpr: string; // Low
-  readonly stck_oprc: string; // Open
+  readonly stck_hgpr: string; // High (today)
+  readonly stck_lwpr: string; // Low (today)
+  readonly stck_oprc: string; // Open (today)
+  readonly w52_hgpr: string; // 52-week high
+  readonly w52_hgpr_date: string; // 52-week high date (YYYYMMDD)
+  readonly w52_lwpr: string; // 52-week low
+  readonly w52_lwpr_date: string; // 52-week low date (YYYYMMDD)
+  readonly per: string; // PER (Price/Earnings Ratio)
+  readonly pbr: string; // PBR (Price/Book Ratio)
+  readonly eps: string; // EPS (Earnings Per Share)
+  readonly hts_frgn_ehrt: string; // Foreign ownership rate (%)
 }
 
 /** Raw output item from /uapi/domestic-stock/v1/quotations/inquire-daily-price */
@@ -141,6 +157,14 @@ export async function getStockPrice(
     high: buildNormalizedAmount(output.stck_hgpr, today, priceFormat),
     low: buildNormalizedAmount(output.stck_lwpr, today, priceFormat),
     open: buildNormalizedAmount(output.stck_oprc, today, priceFormat),
+    w52High: buildNormalizedAmount(output.w52_hgpr, today, priceFormat),
+    w52HighDate: formatKISDate(output.w52_hgpr_date || ''),
+    w52Low: buildNormalizedAmount(output.w52_lwpr, today, priceFormat),
+    w52LowDate: formatKISDate(output.w52_lwpr_date || ''),
+    per: parseRawAmount(output.per) ?? 0,
+    pbr: parseRawAmount(output.pbr) ?? 0,
+    eps: parseRawAmount(output.eps) ?? 0,
+    foreignOwnershipRate: parseRawAmount(output.hts_frgn_ehrt) ?? 0,
     isMarketOpen: marketOpen,
   };
 
