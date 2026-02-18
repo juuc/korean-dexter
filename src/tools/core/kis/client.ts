@@ -223,6 +223,18 @@ export class KISClient {
 
     if (!response.ok) {
       const body = await response.text();
+
+      // KIS returns HTTP 500 (not 401) for token lifecycle errors.
+      // Treat as 401 so executeRequest retries with a refreshed token.
+      // Official error codes: https://apiportal.koreainvestment.com/faq-error-code
+      if (
+        body.includes('EGW00121') || // 유효하지 않은 token
+        body.includes('EGW00122') || // token을 찾을 수 없습니다
+        body.includes('EGW00123')    // 기간이 만료된 token
+      ) {
+        return { httpStatus: 401, body: null };
+      }
+
       throw new KISApiError(
         'API_ERROR',
         `KIS API returned HTTP ${response.status}: ${body}`,
