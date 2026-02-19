@@ -21,28 +21,28 @@ export const API_RATE_LIMITS: Record<string, RateLimitConfig> = {
   opendart: {
     maxPerSecond: 2,
     maxPerMinute: 60,
-    maxPerDay: 1000,
+    maxPerDay: 20_000,    // actual limit is ~20,000+
     retryAfterMs: 1000,
     maxRetries: 3,
   },
   kis: {
     maxPerSecond: 5,
     maxPerMinute: 100,
-    maxPerDay: 10000,
+    maxPerDay: 100_000,   // no documented daily limit
     retryAfterMs: 200,
     maxRetries: 3,
   },
   bok: {
     maxPerSecond: 2,
     maxPerMinute: 30,
-    maxPerDay: 5000,
+    maxPerDay: 50_000,    // no documented daily limit
     retryAfterMs: 1000,
     maxRetries: 3,
   },
   kosis: {
     maxPerSecond: 1,
     maxPerMinute: 20,
-    maxPerDay: 3000,
+    maxPerDay: 10_000,    // dev accounts: 1,000 traffic refers to data rows, not API calls
     retryAfterMs: 2000,
     maxRetries: 3,
   },

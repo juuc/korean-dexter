@@ -18,7 +18,12 @@
     "eval": "bun run src/evals/run.ts --fixtures",
     "eval:live": "bun run src/evals/run.ts",
     "eval:record": "bun run scripts/record-fixtures.ts",
-    "seed:demo": "bun run scripts/seed-demo-data.ts"
+    "seed:demo": "bun run scripts/seed-demo-data.ts",
+    "seed:upload": "bun run scripts/upload-to-d1.ts",
+    "seed:update-quarterly": "bun run scripts/seed-update-quarterly.ts",
+    "seed:update-prices": "bun run scripts/seed-update-prices.ts",
+    "seed:update-corps": "bun run scripts/seed-update-corps.ts",
+    "seed:status": "bun run scripts/seed-demo-data.ts --status"
   },
   "dependencies": {
     "@langchain/anthropic": "^1.1.3",

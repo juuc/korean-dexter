@@ -8,7 +8,6 @@ data/corp-code-cache/
 .dexter/
 *.sqlite
 *.sqlite3
-!data/demo.sqlite
 
 # KIS OAuth token cache
 .korean-dexter/

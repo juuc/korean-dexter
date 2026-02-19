@@ -251,12 +251,12 @@ describe('RateLimiter', () => {
     });
 
     test('respects base config maximum', () => {
-      // OpenDART has 1000/day max
+      // OpenDART has 20_000/day max — requesting 5000 should give 5000
       const evalLimiter = createEvalBudgetLimiter('opendart', 5000);
       const status = evalLimiter.getStatus();
 
-      // Should cap at base config's 1000, not 5000
-      expect(status.dailyRemaining).toBe(1000);
+      // Should use requested 5000 since it's under the 20,000 base limit
+      expect(status.dailyRemaining).toBe(5000);
     });
 
     test('throws for unknown API', () => {
