@@ -101,14 +101,15 @@ Generate a brief 1-2 sentence summary of this answer.`;
    * Saves the answer to the most recent message and generates a summary.
    * Should be called when the agent completes answering.
    */
-  async saveAnswer(answer: string): Promise<void> {
+  async saveAnswer(answer: string): Promise<string> {
     const lastMessage = this.messages[this.messages.length - 1];
     if (!lastMessage || lastMessage.answer !== null) {
-      return; // No pending query or already has answer
+      return ''; // No pending query or already has answer
     }
 
     lastMessage.answer = answer;
     lastMessage.summary = await this.generateSummary(lastMessage.query, answer);
+    return lastMessage.summary;
   }
 
   /**
@@ -219,6 +220,22 @@ Select which previous messages are relevant to understanding or answering the cu
    */
   clear(): void {
     this.messages = [];
+    this.relevantMessagesByQuery.clear();
+  }
+
+  /**
+   * Restores messages from persisted session data.
+   * Summaries are already saved so no LLM calls needed.
+   */
+  restoreFromSession(
+    turns: ReadonlyArray<{ query: string; answer: string; summary: string }>
+  ): void {
+    this.messages = turns.map((turn, i) => ({
+      id: i,
+      query: turn.query,
+      answer: turn.answer,
+      summary: turn.summary,
+    }));
     this.relevantMessagesByQuery.clear();
   }
 }

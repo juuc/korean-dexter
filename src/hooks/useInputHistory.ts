@@ -2,7 +2,11 @@ import { useState, useCallback, useRef } from 'react';
 
 // Simple in-memory history (long-term persistence can be added later)
 class InputHistoryStore {
-  private messages: string[] = [];
+  private messages: string[];
+  constructor(initialQueries?: string[]) {
+    // Store in reverse order (newest first) so up-arrow starts from most recent
+    this.messages = initialQueries ? [...initialQueries].reverse() : [];
+  }
   getMessageStrings(): string[] { return this.messages; }
   async addUserMessage(message: string): Promise<void> { this.messages.unshift(message); }
   async updateAgentResponse(_response: string): Promise<void> { /* no-op */ }
@@ -21,6 +25,8 @@ export interface UseInputHistoryResult {
   updateAgentResponse: (response: string) => Promise<void>;
   /** Reset navigation back to typing mode */
   resetNavigation: () => void;
+  /** Restore queries from a loaded session */
+  restoreQueries: (queries: string[]) => void;
 }
 
 /**
@@ -34,7 +40,7 @@ export interface UseInputHistoryResult {
  */
 export function useInputHistory(): UseInputHistoryResult {
   const storeRef = useRef<InputHistoryStore>(new InputHistoryStore());
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<string[]>(storeRef.current.getMessageStrings());
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
 
   // Navigate to older message (up arrow)
@@ -87,6 +93,13 @@ export function useInputHistory(): UseInputHistoryResult {
     setHistoryIndex(-1);
   }, []);
 
+  // Restore queries from a loaded session
+  const restoreQueries = useCallback((queries: string[]) => {
+    storeRef.current = new InputHistoryStore(queries);
+    setMessages(storeRef.current.getMessageStrings());
+    setHistoryIndex(-1);
+  }, []);
+
   // Compute the current history value based on index
   // Stack ordering: messages[0] is most recent, direct access
   const historyValue = historyIndex === -1
@@ -100,5 +113,6 @@ export function useInputHistory(): UseInputHistoryResult {
     saveMessage,
     updateAgentResponse,
     resetNavigation,
+    restoreQueries,
   };
 }

@@ -1,6 +1,8 @@
 import { useState, useCallback, useRef } from 'react';
 import { Agent } from '../agent/agent.js';
 import { InMemoryChatHistory } from '../utils/in-memory-chat-history.js';
+import { appendTurn } from '../utils/session-store.js';
+import type { SerializedTurn } from '../utils/session-store.js';
 import type { HistoryItem, WorkingState } from '../components/index.js';
 import type { AgentConfig, AgentEvent, DoneEvent } from '../agent/index.js';
 
@@ -22,6 +24,8 @@ export interface UseAgentRunnerResult {
   // Actions
   runQuery: (query: string) => Promise<RunQueryResult | undefined>;
   cancelExecution: () => void;
+  clearHistory: () => void;
+  restoreHistory: (items: HistoryItem[]) => void;
   setError: (error: string | null) => void;
 }
 
@@ -31,7 +35,8 @@ export interface UseAgentRunnerResult {
 
 export function useAgentRunner(
   agentConfig: AgentConfig,
-  inMemoryChatHistoryRef: React.RefObject<InMemoryChatHistory>
+  inMemoryChatHistoryRef: React.RefObject<InMemoryChatHistory>,
+  activeSessionIdRef: React.RefObject<string>
 ): UseAgentRunnerResult {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [workingState, setWorkingState] = useState<WorkingState>({ status: 'idle' });
@@ -118,26 +123,40 @@ export function useAgentRunner(
 
       case 'done': {
         const doneEvent = event as DoneEvent;
-        updateLastHistoryItem(item => {
-          // Update answer in chat history for multi-turn context
-          if (doneEvent.answer) {
-            inMemoryChatHistoryRef.current?.saveAnswer(doneEvent.answer).catch(() => {
-              // Silently ignore errors in updating history
+        updateLastHistoryItem(() => ({
+          answer: doneEvent.answer,
+          status: 'complete' as const,
+          duration: doneEvent.totalTime,
+          tokenUsage: doneEvent.tokenUsage,
+          tokensPerSecond: doneEvent.tokensPerSecond,
+        }));
+        // Persist to chat history and session file
+        if (doneEvent.answer) {
+          inMemoryChatHistoryRef.current?.saveAnswer(doneEvent.answer)
+            .then((summary) => {
+              const turn: SerializedTurn = {
+                id: Date.now().toString(),
+                query: inMemoryChatHistoryRef.current?.getMessages().at(-1)?.query ?? '',
+                answer: doneEvent.answer,
+                summary,
+                status: 'complete',
+                duration: doneEvent.totalTime,
+                tokenUsage: doneEvent.tokenUsage,
+                tokensPerSecond: doneEvent.tokensPerSecond,
+                toolCalls: doneEvent.toolCalls,
+                createdAt: new Date().toISOString(),
+              };
+              appendTurn(activeSessionIdRef.current, turn);
+            })
+            .catch(() => {
+              // Silently ignore persistence errors
             });
-          }
-          return {
-            answer: doneEvent.answer,
-            status: 'complete' as const,
-            duration: doneEvent.totalTime,
-            tokenUsage: doneEvent.tokenUsage,
-            tokensPerSecond: doneEvent.tokensPerSecond,
-          };
-        });
+        }
         setWorkingState({ status: 'idle' });
         break;
       }
     }
-  }, [updateLastHistoryItem, inMemoryChatHistoryRef]);
+  }, [updateLastHistoryItem, inMemoryChatHistoryRef, activeSessionIdRef]);
 
   // Run a query through the agent
   const runQuery = useCallback(async (query: string): Promise<RunQueryResult | undefined> => {
@@ -212,6 +231,16 @@ export function useAgentRunner(
     }
   }, [agentConfig, inMemoryChatHistoryRef, handleEvent]);
 
+  // Clear all history (for /new command)
+  const clearHistory = useCallback(() => {
+    setHistory([]);
+  }, []);
+
+  // Restore history from a loaded session
+  const restoreHistory = useCallback((items: HistoryItem[]) => {
+    setHistory(items);
+  }, []);
+
   // Cancel the current execution
   const cancelExecution = useCallback(() => {
     if (abortControllerRef.current) {
@@ -238,6 +267,8 @@ export function useAgentRunner(
     isProcessing,
     runQuery,
     cancelExecution,
+    clearHistory,
+    restoreHistory,
     setError,
   };
 }
