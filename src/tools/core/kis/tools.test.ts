@@ -119,11 +119,13 @@ const SAMPLE_INDEX_PRICE = JSON.stringify({
 describe('KIS tools', () => {
   let tempDir: string;
   let cacheDbPath: string;
+  let tokenPath: string;
   const originalFetch = globalThis.fetch;
 
   beforeEach(() => {
     tempDir = mkdtempSync(join(tmpdir(), 'kis-tools-test-'));
     cacheDbPath = join(tempDir, 'kis-cache.sqlite');
+    tokenPath = join(tempDir, 'kis-token.json');
   });
 
   afterEach(async () => {
@@ -137,6 +139,7 @@ describe('KIS tools', () => {
       appSecret: 'test-secret',
       paperTrading: false,
       cacheDbPath,
+      tokenCachePath: tokenPath,
     });
   }
 
@@ -408,6 +411,7 @@ describe('KIS tools', () => {
         appSecret: 'test-secret',
         paperTrading: true,
         cacheDbPath,
+        tokenCachePath: tokenPath,
       });
 
       await getStockPrice(client, '005930');

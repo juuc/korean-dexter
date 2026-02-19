@@ -82,24 +82,18 @@ describe('KISClient', () => {
       appSecret: 'test-app-secret',
       paperTrading: false,
       cacheDbPath,
+      tokenCachePath: tokenPath,
     });
   }
 
-  // Patch the auth manager to use our temp token path
   function createClientWithToken(): KISClient {
-    // We need to construct with explicit credentials and token path
-    // Since KISClient doesn't expose tokenCachePath, we seed the env token
-    // and mock fetch for any token refresh
-    const client = new KISClient({
+    return new KISClient({
       appKey: 'test-app-key',
       appSecret: 'test-app-secret',
       paperTrading: false,
       cacheDbPath,
+      tokenCachePath: tokenPath,
     });
-
-    // The auth manager won't find our token (different path),
-    // so we mock fetch to handle token issuance + API calls
-    return client;
   }
 
   describe('request headers', () => {

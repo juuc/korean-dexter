@@ -107,7 +107,12 @@ Input:
 - end_date: YYYYMMDD format (default: today)
 - period: "D" daily (default), "W" weekly, "M" monthly
 
-Returns: array of { date, open, high, low, close, volume }
+Returns:
+- summary: dateRange, returnPercent, highestClose, lowestClose, averageVolume, closingPriceChart (sparkline)
+- prices: array of { date, open, high, low, close, volume }
+
+The closingPriceChart is a Unicode sparkline (▁▂▃▄▅▆▇█) showing the closing price trend.
+Include it in your response when discussing price trends — it renders as a mini-chart in the terminal.
 
 When to use:
 - User asks about price trends, historical performance

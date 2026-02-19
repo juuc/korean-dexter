@@ -66,11 +66,13 @@ export class KISClient {
     readonly appSecret?: string;
     readonly paperTrading?: boolean;
     readonly cacheDbPath?: string;
+    readonly tokenCachePath?: string;
   }) {
     this.auth = new KISAuthManager({
       appKey: options?.appKey,
       appSecret: options?.appSecret,
       paperTrading: options?.paperTrading,
+      tokenCachePath: options?.tokenCachePath,
     });
 
     this.rateLimiter = createRateLimiter('kis');

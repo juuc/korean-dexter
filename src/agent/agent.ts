@@ -82,17 +82,23 @@ export class Agent {
         yield { type: 'thinking', message: trimmedText };
       }
 
-      // No tool calls = ready to generate final answer
+      // No tool calls = ready to produce final answer
       if (typeof response === 'string' || !hasToolCalls(response)) {
-        // If no tools were called at all, just use the direct response
-        // This handles greetings, clarifying questions, etc.
-        if (!ctx.scratchpad.hasToolResults() && responseText) {
-          yield* this.handleDirectResponse(responseText, ctx);
+        // If the iteration already produced a substantive text response,
+        // use it directly — avoids a redundant final-answer LLM call.
+        if (responseText && responseText.trim().length > 0) {
+          yield* this.handleIterationAnswer(responseText, ctx);
           return;
         }
 
-        // Generate final answer with full context from scratchpad
-        yield* this.generateFinalAnswer(ctx);
+        // No text but tools were called — generate from scratchpad
+        if (ctx.scratchpad.hasToolResults()) {
+          yield* this.generateFinalAnswer(ctx);
+          return;
+        }
+
+        // No tools, no text — shouldn't happen but handle gracefully
+        yield* this.handleDirectResponse('답변을 생성할 수 없습니다.', ctx);
         return;
       }
 
@@ -130,7 +136,7 @@ export class Agent {
   }
 
   /**
-   * Generate final answer with full scratchpad context.
+   * Use a direct response when no tools were called (greetings, concepts, etc.)
    */
   private async *handleDirectResponse(
     responseText: string,
@@ -142,6 +148,28 @@ export class Agent {
       type: 'done',
       answer: responseText,
       toolCalls: [],
+      iterations: ctx.iteration,
+      totalTime,
+      tokenUsage: ctx.tokenCounter.getUsage(),
+      tokensPerSecond: ctx.tokenCounter.getTokensPerSecond(totalTime),
+    };
+  }
+
+  /**
+   * Use the iteration response directly as the final answer.
+   * Unlike generateFinalAnswer(), this avoids a redundant LLM call
+   * when the iteration already produced a complete answer.
+   */
+  private async *handleIterationAnswer(
+    responseText: string,
+    ctx: RunContext
+  ): AsyncGenerator<AgentEvent, void> {
+    yield { type: 'answer_start' };
+    const totalTime = Date.now() - ctx.startTime;
+    yield {
+      type: 'done',
+      answer: responseText,
+      toolCalls: ctx.scratchpad.getToolCallRecords(),
       iterations: ctx.iteration,
       totalTime,
       tokenUsage: ctx.tokenCounter.getUsage(),
