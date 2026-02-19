@@ -61,9 +61,9 @@ export async function getKosisData(
     params.newEstPrdCnt = '5';
   }
 
-  // Cache: historical data longer, recent data shorter
+  // Past periods are immutable facts — cache permanently. Recent data refreshes hourly.
   const isRecent = !options?.endPeriod || isRecentKosisPeriod(options.endPeriod);
-  const ttlMs = isRecent ? CACHE_TTL.SHORT : CACHE_TTL.MEDIUM;
+  const ttlMs = isRecent ? CACHE_TTL.SHORT : CACHE_TTL.PERMANENT;
 
   const result = await client.request<readonly KosisDataRow[]>(
     'Stat/getData.do',

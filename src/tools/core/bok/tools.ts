@@ -41,9 +41,9 @@ export async function getEconomicIndicator(
   startDate: string,
   endDate: string
 ): Promise<ToolResult<BokIndicatorResult>> {
-  // Determine cache TTL: historical data is more stable
+  // Past periods are immutable facts — cache permanently. Current period refreshes hourly.
   const isCurrentPeriod = isRecentPeriod(endDate, periodType);
-  const ttlMs = isCurrentPeriod ? CACHE_TTL.SHORT : CACHE_TTL.MEDIUM;
+  const ttlMs = isCurrentPeriod ? CACHE_TTL.SHORT : CACHE_TTL.PERMANENT;
 
   const result = await client.request<BokStatSearchResponse>(
     'StatisticSearch',
