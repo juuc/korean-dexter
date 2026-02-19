@@ -1,27 +1,19 @@
 export const THINKING_VERBS = [
-  'Alchemizing', 'Ambling', 'Baking', 'Boogieing',
-  'Brainstorming', 'Brewing', 'Buffering', 'Buzzing',
-  'Cerebrating', 'Chugging', 'Chugging along', 'Churning',
-  'Clauding', 'Cogitating', 'Concocting', 'Conjuring',
-  'Cooking', 'Crafting', 'Cruising', 'Daydreaming',
-  'Defragmenting', 'Deliberating', 'Dillydallying', 'Divining',
-  'Enchanting', 'Fermenting', 'Fiddling', 'Finagling',
-  'Finessing', 'Forging', 'Futzing', 'Gallivanting',
-  'Gliding', 'Grooving', 'Hatching', 'Hemming and hawing',
-  'Humming', 'Hustling', 'Ideating', 'Incanting',
-  'Invoking', 'Juggling', 'Kneading', 'Manifesting',
-  'Marinating', 'Moseying', 'Mulling', 'Musing',
-  'Noodling', 'Percolating', 'Plotting', 'Pondering',
-  'Pottering', 'Prancing', 'Purring', 'Puttering',
-  'Puzzling', 'Reticulating', 'Revving', 'Riffing',
-  'Ruminating', 'Sashaying', 'Sautéing', 'Scampering',
-  'Scheming', 'Scribbling', 'Sculpting', 'Seasoning',
-  'Shimmying', 'Simmering', 'Sketching', 'Sorcering',
-  'Spellcasting', 'Stewing', 'Summoning', 'Swooshing',
-  'Thrumming', 'Tinkering', 'Transmuting', 'Trotting',
-  'Vibing', 'Waddling', 'Warming up', 'Whipping up',
-  'Whirring', 'Whittling', 'Wizarding', 'Woolgathering',
-  'Wrangling', 'Zipping', 'Zooming',
+  // 사고 가동형
+  '생각 우려내는 중', '아이디어 숙성 중', '뇌 톱니 돌리는 중',
+  '사고 발효 중', '연결점 찾는 중', '상상력 가동 중',
+  '뇌에 불 지피는 중', '아이디어 채굴 중', '생각 엮는 중',
+  '사고 실타래 푸는 중',
+  // 조리 · 연금술형
+  '생각 끓이는 중', '약불로 달이는 중', '아이디어 볶는 중',
+  '개념 재조합 중', '통찰 증류 중', '사고 정제 중',
+  '영감 배합 중', '생각 재료 다듬는 중', '번뜩임 숙성 중',
+  '직관 조율 중',
+  // 느긋 · 몽상형
+  '생각 산책 중', '딴생각 채집 중', '골똘히 굴리는 중',
+  '천천히 곱씹는 중', '상상 구름 모으는 중', '사고 잠수 중',
+  '아이디어 탐사 중', '생각 지층 파는 중', '의미 결 엮는 중',
+  '조용히 수 읽는 중',
 ] as const;
 
 export function getRandomThinkingVerb(): string {

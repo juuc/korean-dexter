@@ -110,11 +110,11 @@ export function WorkingIndicator({ state }: WorkingIndicatorProps) {
     case 'thinking':
     case 'tool':
       statusWord = `${thinkingVerb}...`;
-      suffixEnd = ' to interrupt)';
+      suffixEnd = '로 중단)';
       break;
     case 'answering':
-      statusWord = 'Answering';
-      suffixEnd = ` to interrupt)`;
+      statusWord = '답변 중';
+      suffixEnd = '로 중단)';
       break;
   }
 

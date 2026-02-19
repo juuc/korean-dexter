@@ -215,13 +215,31 @@ export function transformBold(content: string): string {
 }
 
 /**
+ * Colorize financial percentage change patterns.
+ * +X.XX% → green, -X.XX% → red
+ */
+function transformPriceChanges(content: string): string {
+  // Positive: +X.XX% or +X% (not preceded by word chars or digits)
+  let result = content.replace(/(?<![a-zA-Z\d])\+\d+(?:\.\d+)?%/g, (match) =>
+    chalk.green(match)
+  );
+  // Negative: -X.XX% or -X%
+  result = result.replace(/(?<![a-zA-Z\d])-\d+(?:\.\d+)?%/g, (match) =>
+    chalk.red(match)
+  );
+  return result;
+}
+
+/**
  * Apply all pre-render formatting to response content.
  * - Converts markdown tables to unicode box-drawing tables
  * - Converts **bold** to ANSI bold
+ * - Colorizes percentage changes (green/red)
  */
 export function formatResponse(content: string): string {
   let result = content;
   result = transformMarkdownTables(result);
   result = transformBold(result);
+  result = transformPriceChanges(result);
   return result;
 }
