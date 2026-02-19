@@ -3,7 +3,7 @@
  * CLI - Real-time agentic loop interface
  * Shows tool calls and progress in Claude Code style
  */
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Box, Text, useApp, useInput } from 'ink';
 import { config } from 'dotenv';
 
@@ -12,15 +12,20 @@ import { Intro } from './components/Intro.js';
 import { ProviderSelector, ModelSelector, ModelInputField } from './components/ModelSelector.js';
 import { ApiKeyConfirm, ApiKeyInput } from './components/ApiKeyPrompt.js';
 import { DebugPanel } from './components/DebugPanel.js';
-import { HistoryItemView, WorkingIndicator } from './components/index.js';
+import { HistoryItemView, WorkingIndicator, SessionSelector } from './components/index.js';
 import { getApiKeyNameForProvider, getProviderDisplayName } from './utils/env.js';
+import { isDemoMode } from './tools/langchain-tools.js';
 
 import { useModelSelection } from './hooks/useModelSelection.js';
 import { useAgentRunner } from './hooks/useAgentRunner.js';
 import { useInputHistory } from './hooks/useInputHistory.js';
+import { generateSessionId, loadSession, listSessions, migrateLegacySession, turnsToHistoryItems } from './utils/session-store.js';
 
 // Load environment variables
 config({ quiet: true });
+
+// One-time migration of legacy single-file session
+migrateLegacySession();
 
 export function CLI() {
   const { exit } = useApp();
@@ -28,6 +33,10 @@ export function CLI() {
   // Ref to hold setError - avoids TDZ issue since useModelSelection needs to call
   // setError but useAgentRunner (which provides setError) depends on useModelSelection's outputs
   const setErrorRef = useRef<((error: string | null) => void) | null>(null);
+
+  // Session management
+  const [showSessionPicker, setShowSessionPicker] = useState(false);
+  const activeSessionIdRef = useRef<string>(generateSessionId());
 
   // Model selection state and handlers
   const {
@@ -53,8 +62,10 @@ export function CLI() {
     isProcessing,
     runQuery,
     cancelExecution,
+    clearHistory,
+    restoreHistory,
     setError,
-  } = useAgentRunner({ model, modelProvider: provider, maxIterations: 10 }, inMemoryChatHistoryRef);
+  } = useAgentRunner({ model, modelProvider: provider, maxIterations: 10 }, inMemoryChatHistoryRef, activeSessionIdRef);
 
   // Assign setError to ref so useModelSelection's callback can access it
   setErrorRef.current = setError;
@@ -67,6 +78,7 @@ export function CLI() {
     saveMessage,
     updateAgentResponse,
     resetNavigation,
+    restoreQueries,
   } = useInputHistory();
 
   // Handle history navigation from Input component
@@ -77,6 +89,18 @@ export function CLI() {
       navigateDown();
     }
   }, [navigateUp, navigateDown]);
+
+  // Handle session selection from picker
+  const handleSessionSelect = useCallback((sessionId: string | null) => {
+    setShowSessionPicker(false);
+    if (!sessionId) return;
+    const session = loadSession(sessionId);
+    if (!session?.turns.length) return;
+    inMemoryChatHistoryRef.current.restoreFromSession(session.turns);
+    restoreHistory(turnsToHistoryItems(session.turns));
+    restoreQueries(session.turns.map(t => t.query));
+    activeSessionIdRef.current = sessionId;
+  }, [inMemoryChatHistoryRef, restoreHistory, restoreQueries]);
 
   // Handle user input submission
   const handleSubmit = useCallback(async (query: string) => {
@@ -93,8 +117,22 @@ export function CLI() {
       return;
     }
 
+    // Handle new session command
+    if (query === '/new') {
+      inMemoryChatHistoryRef.current.clear();
+      clearHistory();
+      activeSessionIdRef.current = generateSessionId();
+      return;
+    }
+
+    // Handle resume command
+    if (query === '/resume') {
+      setShowSessionPicker(true);
+      return;
+    }
+
     // Ignore if not idle (processing or in selection flow)
-    if (isInSelectionFlow() || workingState.status !== 'idle') return;
+    if (isInSelectionFlow() || showSessionPicker || workingState.status !== 'idle') return;
 
     // Save user message to history immediately and reset navigation
     await saveMessage(query);
@@ -105,12 +143,16 @@ export function CLI() {
     if (result?.answer) {
       await updateAgentResponse(result.answer);
     }
-  }, [exit, startSelection, isInSelectionFlow, workingState.status, runQuery, saveMessage, updateAgentResponse, resetNavigation]);
+  }, [exit, startSelection, isInSelectionFlow, showSessionPicker, workingState.status, runQuery, saveMessage, updateAgentResponse, resetNavigation, clearHistory, inMemoryChatHistoryRef, restoreHistory, restoreQueries]);
 
   // Handle keyboard shortcuts
   useInput((input, key) => {
     // Escape key - cancel selection flows or running agent
     if (key.escape) {
+      if (showSessionPicker) {
+        setShowSessionPicker(false);
+        return;
+      }
       if (isInSelectionFlow()) {
         cancelSelection();
         return;
@@ -133,6 +175,15 @@ export function CLI() {
       }
     }
   });
+
+  // Session picker overlay
+  if (showSessionPicker) {
+    return (
+      <Box flexDirection="column">
+        <SessionSelector sessions={listSessions()} onSelect={handleSessionSelect} />
+      </Box>
+    );
+  }
 
   // Render selection screens
   const { appState, pendingProvider, pendingModels } = selectionState;
@@ -197,7 +248,7 @@ export function CLI() {
   // Main chat interface
   return (
     <Box flexDirection="column">
-      <Intro provider={provider} model={model} />
+      <Intro provider={provider} model={model} isDemoMode={isDemoMode()} />
 
       {/* All history items (queries, events, answers) */}
       {history.map(item => (

@@ -17,3 +17,11 @@ export {
   CACHE_TTL,
   createDefaultCaches,
 } from './cache.js';
+export {
+  DemoDartClient,
+  DemoKisClient,
+  DemoBokClient,
+  DemoKosisClient,
+  loadDemoCorpCodes,
+  isDemoDbAvailable,
+} from './demo-client.js';

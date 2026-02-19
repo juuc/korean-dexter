@@ -8,6 +8,7 @@ data/corp-code-cache/
 .dexter/
 *.sqlite
 *.sqlite3
+!data/demo.sqlite
 
 # KIS OAuth token cache
 .korean-dexter/
@@ -21,6 +22,9 @@ Thumbs.db
 
 # OMC state
 .omc/
+
+# Claude Code local settings (contains API keys)
+.claude/settings.json
 
 # IDE
 .vscode/

@@ -17,7 +17,8 @@
     "docs:check": "markdown-link-check README.md CONTRIBUTING.md docs/*.md --config .markdown-link-check.json",
     "eval": "bun run src/evals/run.ts --fixtures",
     "eval:live": "bun run src/evals/run.ts",
-    "eval:record": "bun run scripts/record-fixtures.ts"
+    "eval:record": "bun run scripts/record-fixtures.ts",
+    "seed:demo": "bun run scripts/seed-demo-data.ts"
   },
   "dependencies": {
     "@langchain/anthropic": "^1.1.3",

@@ -41,6 +41,14 @@ import {
   checkKosisApiKey,
 } from '@/utils/env.js';
 import { formatKoreanError } from '@/tools/error-messages.js';
+import {
+  DemoDartClient,
+  DemoKisClient,
+  DemoBokClient,
+  DemoKosisClient,
+  loadDemoCorpCodes,
+  isDemoDbAvailable,
+} from '@/infra/demo-client.js';
 import type { RegisteredTool } from './registry.js';
 import {
   RESOLVE_COMPANY_DESCRIPTION,
@@ -60,6 +68,7 @@ import {
   SEARCH_KOSIS_TABLES_DESCRIPTION,
 } from './descriptions/kosis-tools.js';
 
+import { renderSparkline } from '@/utils/sparkline.js';
 import { logger } from '@/utils/logger.js';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -191,6 +200,43 @@ export function setResolverData(mappings: ReadonlyArray<{ corp_code: string; cor
   }));
   _resolver.loadFromData(corpMappings);
   _resolverInitialized = true;
+}
+
+/**
+ * Auto-detect demo mode: if NO API keys are configured AND the demo
+ * SQLite database exists, inject demo clients and activate demo mode.
+ * Returns true if demo mode was activated.
+ */
+export function initDemoMode(): boolean {
+  const hasAnyKey =
+    checkOpenDartApiKey() ||
+    checkKisCredentials() ||
+    checkBokApiKey() ||
+    checkKosisApiKey();
+
+  if (hasAnyKey) return false;
+  if (!isDemoDbAvailable()) return false;
+
+  _demoMode = true;
+  setDartClient(new DemoDartClient());
+  setKisClient(new DemoKisClient());
+  setBokClient(new DemoBokClient());
+  setKosisClient(new DemoKosisClient());
+
+  // Seed CorpCodeResolver from demo SQLite
+  const mappings = loadDemoCorpCodes();
+  if (mappings.length > 0) {
+    setResolverData(mappings);
+  }
+
+  return true;
+}
+
+/**
+ * Check if demo mode is currently active.
+ */
+export function isDemoMode(): boolean {
+  return _demoMode;
 }
 
 // ---------------------------------------------------------------------------
@@ -526,10 +572,56 @@ function createGetHistoricalPricesTool(): RegisteredTool {
       }
 
       const data = result.data;
+
+      // Reverse to chronological order (KIS returns newest-first)
+      const chronological = [...data.prices].reverse();
+
+      // Build summary stats + sparkline if we have data
+      let summary: Record<string, unknown> | undefined;
+      if (chronological.length >= 2) {
+        const closingPrices = chronological.map((p) => p.close);
+        const volumes = chronological.map((p) => p.volume);
+
+        const firstClose = closingPrices[0];
+        const lastClose = closingPrices[closingPrices.length - 1];
+        const returnPct =
+          firstClose !== 0
+            ? ((lastClose - firstClose) / firstClose) * 100
+            : 0;
+
+        // Find highest/lowest closing prices
+        let highIdx = 0;
+        let lowIdx = 0;
+        for (let i = 1; i < closingPrices.length; i++) {
+          if (closingPrices[i] > closingPrices[highIdx]) highIdx = i;
+          if (closingPrices[i] < closingPrices[lowIdx]) lowIdx = i;
+        }
+
+        const avgVolume = Math.round(
+          volumes.reduce((a, b) => a + b, 0) / volumes.length
+        );
+
+        summary = {
+          dateRange: `${chronological[0].date} ~ ${chronological[chronological.length - 1].date}`,
+          returnPercent: `${returnPct >= 0 ? '+' : ''}${returnPct.toFixed(2)}%`,
+          highestClose: {
+            date: chronological[highIdx].date,
+            price: closingPrices[highIdx].toLocaleString('en-US'),
+          },
+          lowestClose: {
+            date: chronological[lowIdx].date,
+            price: closingPrices[lowIdx].toLocaleString('en-US'),
+          },
+          averageVolume: avgVolume.toLocaleString('en-US'),
+          closingPriceChart: renderSparkline(closingPrices),
+        };
+      }
+
       return JSON.stringify({
         stockCode: data.stockCode,
         period: data.period,
         count: data.prices.length,
+        ...(summary && { summary }),
         prices: data.prices.map((p) => ({
           date: p.date,
           open: p.open,
@@ -933,6 +1025,9 @@ function createSearchKosisTablesTool(): RegisteredTool {
  * In demo mode, all tools are created regardless of API keys.
  */
 export function createKoreanFinancialTools(): RegisteredTool[] {
+  // Auto-detect demo mode on first tool creation
+  initDemoMode();
+
   const tools: RegisteredTool[] = [];
 
   // resolve_company is always available (uses local data, no API key needed)

@@ -8,9 +8,10 @@ import { getModelDisplayName } from './ModelSelector.js';
 interface IntroProps {
   provider: string;
   model: string;
+  isDemoMode?: boolean;
 }
 
-export function Intro({ provider, model }: IntroProps) {
+export function Intro({ provider, model, isDemoMode }: IntroProps) {
   const { introWidth } = dimensions;
   const welcomeText = 'Welcome to Korean Dexter';
   const versionText = ` v${packageJson.version}`;
@@ -43,7 +44,10 @@ export function Intro({ provider, model }: IntroProps) {
       <Box marginY={1} flexDirection="column">
         <Text>한국 금융 AI 리서치 에이전트</Text>
         <Text>Your AI assistant for deep Korean financial research.</Text>
-        <Text color={colors.muted}>Model: <Text color={colors.primary}>{getModelDisplayName(model)}.</Text> Type /model to change.</Text>
+        <Text color={colors.muted}>Model: <Text color={colors.primary}>{getModelDisplayName(model)}.</Text> Type /model to change. /new for new session. /resume to continue a previous one.</Text>
+        {isDemoMode && (
+          <Text color="yellow">Demo mode — using bundled data for top 200 companies. Set API keys for live data.</Text>
+        )}
       </Box>
     </Box>
   );
